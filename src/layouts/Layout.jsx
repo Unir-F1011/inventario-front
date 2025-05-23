@@ -1,14 +1,15 @@
-import { SpinnerRoller } from './../common/components/SpinnerRoller';
 import { ToastAlertsContainer } from "./../common/plugins/toast/Toast"
 import './../common/css/app.css'
 import { Bounce } from 'react-toastify';
+import { VerticalBar } from '../common/components/VerticalBar';
+import { BrowserTree } from '../common/components/BrowserTree';
+
 
 function Layout() {
 
 
     return (
-        <main className='h-screen w-full'>
-
+        <main>
             <ToastAlertsContainer
                 position="bottom-center"
                 autoClose={3000}
@@ -19,26 +20,14 @@ function Layout() {
                 transition={Bounce}
                 theme="colored"
             />
-            <SpinnerRoller />
-            <aside>
-                {
-                    /**
-                     * Barra de busqueda
-                     */
-                }
-            </aside>
-            <section>
-                { /**
-                   * 
-                   * Router
-                 */
-                }
-            </section>
 
-        
+            <div className='flex w-full h-screen'>
+                <VerticalBar />
+                <BrowserTree />
+            </div>
         </main>
     )
 }
 
 
-export default Layout;
+export default Layout
