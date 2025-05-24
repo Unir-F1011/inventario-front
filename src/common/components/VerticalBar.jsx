@@ -7,24 +7,24 @@ export const VerticalBar = () => {
                 <ul className="space-y-2 font-medium">
                     <li>
                         <RouterLink to="/">
-                            <span className="ms-3 text-white">Dashboard</span>
+                            <span className="ms-3 text-white">Tabla</span>
                         </RouterLink>
                     </li>
 
                     <li>
                         <RouterLink to="/order" >
-                            <span className="flex-1 ms-3 whitespace-nowrap text-white">Place Order</span>
+                            <span className="flex-1 ms-3 whitespace-nowrap text-white">Crear Orden</span>
                         </RouterLink>
                     </li>
                     <li>
                         <RouterLink to="/client">
-                            <span className="flex-1 ms-3 whitespace-nowrap text-white">Send Client</span>
+                            <span className="flex-1 ms-3 whitespace-nowrap text-white">Envio Clientes</span>
 
                         </RouterLink>
                     </li>
                     <li>
                         <RouterLink to="/delete">
-                            <span className="flex-1 ms-3 whitespace-nowrap text-white">Delete Item</span>
+                            <span className="flex-1 ms-3 whitespace-nowrap text-white">Elimiar producto</span>
                         </RouterLink>
                     </li>
 

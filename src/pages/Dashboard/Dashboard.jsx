@@ -1,74 +1,129 @@
-import { Pagination, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react"
-import { useState } from "react";
+import { Label, Pagination, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react"
+import { useEffect, useState } from "react";
+import mock from "./../../mocks/data.json"
+import { use } from "react";
 
 
 function Dashboard() {
     const [currentPage, setCurrentPage] = useState(1);
+    const [data, setData] = useState([])
+    const [key, setKey] = useState("")
+    const [value, setValue] = useState()
+    const columns = [
+        "Id",
+        "Producto",
+        "Color",
+        "Categoría",
+        "Precio",
+        "Dimensiones",
+        "Total",
+        "Acciones"
+    ]
 
     const onPageChange = (page) => setCurrentPage(page);
 
+    useEffect(() => {
+        if (mock != "") {
+            setData(mock.data)
+        }
+
+        console.log("useEffect ", data)
+    }, [currentPage])
+
+    useEffect(() => {
+        if (key.length >= 3 && value.length >= 3) {
+            console.log("AFAF", key, value)
+        }
+    }, [key, value])
 
     return (
         <section className="">
+
+            <div className="flex gap-2 mb-2">
+                <TextInput id="key" type="text" sizing="sm" placeholder="columna" value={key} onChange={k => setKey(k.target.value)} />
+                <TextInput id="value" type="text" sizing="sm" placeholder="valor" value={value} onChange={v => setValue(v.target.value)} />
+
+            </div>
             <div className="overflow-x-auto">
                 <Table hoverable>
                     <TableHead>
                         <TableRow>
-                            <TableHeadCell>Producto</TableHeadCell>
-                            <TableHeadCell>Color</TableHeadCell>
-                            <TableHeadCell>Categoría</TableHeadCell>
-                            <TableHeadCell>Precio</TableHeadCell>
-                            <TableHeadCell>
-                                <span className="sr-only">Edit</span>
-                            </TableHeadCell>
+                            {
+                                columns.map(col => (
+                                    <TableHeadCell>{col}</TableHeadCell>
+
+
+                                ))
+                            }
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
-                        <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                            <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                Apple MacBook Pro 17"
-                            </TableCell>
-                            <TableCell>Sliver</TableCell>
-                            <TableCell>Laptop</TableCell>
-                            <TableCell>$2999</TableCell>
-                            <TableCell>
-                                <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                                    Edit
-                                </a>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                            <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                Microsoft Surface Pro
-                            </TableCell>
-                            <TableCell>White</TableCell>
-                            <TableCell>Laptop PC</TableCell>
-                            <TableCell>$1999</TableCell>
-                            <TableCell>
-                                <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                                    Edit
-                                </a>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                            <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">Magic Mouse 2</TableCell>
-                            <TableCell>Black</TableCell>
-                            <TableCell>Accessories</TableCell>
-                            <TableCell>$99</TableCell>
-                            <TableCell>
-                                <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                                    Edit
-                                </a>
-                            </TableCell>
-                        </TableRow>
+                        {
+                            data.length > 0 ? (
+
+                                data?.map(payload => (
+                                    <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                                        <TableCell>
+                                            {
+                                                payload.id
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.producto
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.color
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.categoria
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.precio
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.dimensiones
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.total
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.acciones
+                                            }
+                                        </TableCell>
+                                    </TableRow>
+
+                                )
+                                )
+
+                            ) : ("Loading data...")
+                        }
 
                     </TableBody>
 
                 </Table>
             </div>
             <div className="flex overflow-x-auto sm:justify-center">
-                <Pagination currentPage={currentPage} totalPages={100} onPageChange={onPageChange} />
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={100}
+                    onPageChange={onPageChange}
+                    nextLabel="Siguiente"
+                    previousLabel="Anterior"
+                />
             </div>
         </section>
 

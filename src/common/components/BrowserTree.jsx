@@ -9,7 +9,7 @@ import DeleteItem from "../../pages/DeleteItem/DeleteItem"
 export const BrowserTree = () => {
 
     return (
-        <section className="mx-auto mt-[10%] w-auto">
+        <section className="mx-auto mt-[5%] w-auto">
             <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/order" element={<PlaceOrder />} />
