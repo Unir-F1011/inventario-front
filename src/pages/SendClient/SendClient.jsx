@@ -1,9 +1,10 @@
 import { Label, TextInput } from "flowbite-react";
+import { useLocation } from "react-router-dom";
 
 
 function SendClient() {
-
-
+    const {state} = useLocation()
+    console.log("hoo -> ", state)
 
     return (
         <section className="bg-black w-100 p-2 rounded-xl">

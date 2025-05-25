@@ -16,18 +16,6 @@ export const VerticalBar = () => {
                             <span className="flex-1 ms-3 whitespace-nowrap text-white">Crear Orden</span>
                         </RouterLink>
                     </li>
-                    <li>
-                        <RouterLink to="/client">
-                            <span className="flex-1 ms-3 whitespace-nowrap text-white">Envio Clientes</span>
-
-                        </RouterLink>
-                    </li>
-                    <li>
-                        <RouterLink to="/delete">
-                            <span className="flex-1 ms-3 whitespace-nowrap text-white">Elimiar producto</span>
-                        </RouterLink>
-                    </li>
-
                 </ul>
             </div>
         </aside>

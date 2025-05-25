@@ -1,7 +1,7 @@
-import { Label, Pagination, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react"
+import { Button, Pagination, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react"
 import { useEffect, useState } from "react";
 import mock from "./../../mocks/data.json"
-import { use } from "react";
+import { ButtonCmp } from "../../common/components/Button";
 
 
 function Dashboard() {
@@ -36,15 +36,17 @@ function Dashboard() {
         }
     }, [key, value])
 
+   
+
     return (
-        <section className="">
+        <section>
 
             <div className="flex gap-2 mb-2">
                 <TextInput id="key" type="text" sizing="sm" placeholder="columna" value={key} onChange={k => setKey(k.target.value)} />
                 <TextInput id="value" type="text" sizing="sm" placeholder="valor" value={value} onChange={v => setValue(v.target.value)} />
 
             </div>
-            <div className="overflow-x-auto">
+            <div className="overflow-auto max-h-[100%]">
                 <Table hoverable>
                     <TableHead>
                         <TableRow>
@@ -100,9 +102,10 @@ function Dashboard() {
                                             }
                                         </TableCell>
                                         <TableCell>
-                                            {
-                                                payload.acciones
-                                            }
+                                            <div className="flex wrap gap-2">
+                                               <ButtonCmp path="/client" name="Enviar a cliente" state={payload} />
+                                               <ButtonCmp path="/delete" name="Eliminar articulo" state={payload} />
+                                            </div>
                                         </TableCell>
                                     </TableRow>
 

@@ -1,7 +1,9 @@
 import { Label, TextInput } from "flowbite-react";
+import { useLocation } from "react-router-dom";
 
 function DeleteItem() {
-
+    const { state } = useLocation()
+    console.log("hoo -> ", state)
 
     return (
 
