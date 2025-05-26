@@ -14,7 +14,7 @@ function Dashboard() {
         "Producto",
         "Color",
         "Categoría",
-        "Precio",
+        "Precio ($)",
         "Dimensiones",
         "Total",
         "Acciones"
