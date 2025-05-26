@@ -4,8 +4,8 @@ function PlaceOrder() {
 
 
     return (
-        <section className="bg-black w-100 p-5 rounded-xl">
-            <h1 className="text-white">Crear Orden</h1>
+        <section className="bg-black min-w-md p-5 mt-20 rounded-xl">
+            <h1 className="text-white flex justify-center">Crear Orden</h1>
             <div className="flex max-w-lg gap-10 items-top">
                 <div>
                     <h1 className="text-white mb-1"> Datos del Producto</h1>

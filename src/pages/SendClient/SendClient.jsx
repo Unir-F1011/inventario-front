@@ -1,94 +1,110 @@
-import { Label, TextInput } from "flowbite-react";
+import { Button, Label, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { ButtonCmp } from "../../common/components/Button";
 
 
 function SendClient() {
-    const {state} = useLocation()
-    const [total, setTotal] = useState(state.total)
+    const { state } = useLocation()
+    const [total, setTotal] = useState(1)
     const [price, setPrice] = useState(state.precio)
-    const [descount, setDescount] = useState(10)
+    const [descount, setDescount] = useState(1)
 
     useEffect(() => {
-        const temp = total * price * descount/100 
-        console.log("Ajust ", temp)
-        setPrice(Math.round(temp))
+        if (total == 0) return
+        const t = total * price
+        const pd = t * (descount / 100)
+        const r = t - pd
+        setPrice(Math.round((r)))
 
-    },[total, descount])
+    }, [total, descount])
+
+
+    const sendClient = () => {
+        console.log("Ejecutado")
+    }
 
     return (
-        <section className="bg-black w-100 p-2 rounded-xl">
-            <h1 className="text-white">Enviar a cliente</h1>
-            <div className="flex max-w-lg flex-col gap-4">
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="small">ID</Label>
+        <section className="bg-black p-4 rounded-xl mt-20">
+            <h1 className="text-white flex justify-center mb-5 mt-2 font-bold">Enviar a clientes</h1>
+            <div className="flex gap-5 items-top">
+
+                <div className="flex min-w-md flex-col gap-4">
+                    <h1 className="text-white">Datos del Producto</h1>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="id">ID</Label>
+                        </div>
+                        <TextInput id="id" type="text" sizing="md" value={state.id} readOnly />
                     </div>
-                    <TextInput id="small" type="text" sizing="md" value={state.id} readOnly />
-                </div>
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="base">Nombre</Label>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="nombre">Nombre</Label>
+                        </div>
+                        <TextInput id="nombre" type="text" sizing="md" value={state.producto} readOnly />
                     </div>
-                    <TextInput id="base" type="text" sizing="md" value={state.producto} readOnly />
-                </div>
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="dimensiones">Dimensiones  (alto, archo, prfundidad)</Label>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="dimensiones">Dimensiones  (alto, archo, prfundidad)</Label>
+                        </div>
+                        <TextInput id="dimensiones" type="text" sizing="md" value={state.dimensiones} readOnly />
                     </div>
-                    <TextInput id="dimensiones" type="text" sizing="md" value={state.dimensiones} readOnly />
+
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="total">Cantidad a enviar</Label>
+                        </div>
+                        <TextInput id="total" type="number" min={1} sizing="md" value={total} onChange={v => setTotal(v.target.value)} />
+                    </div>
+
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="precio">Precio por producto ($)</Label>
+                        </div>
+                        <TextInput id="precio" type="number" sizing="md" value={state.precio} readOnly />
+                    </div>
                 </div>
 
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="total">Cantidad a enviar</Label>
+
+
+                <div className="flex min-w-md flex-col gap-4">
+                    <h1 className=" text-white">Datos del cliente</h1>
+
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="nombre">Nombre</Label>
+                        </div>
+                        <TextInput id="nombre" type="text" sizing="md" />
                     </div>
-                    <TextInput id="total" type="number" min={1} sizing="md" value={total} onChange={v => setTotal(v.target.value)} />
+
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="address">Dirección</Label>
+                        </div>
+                        <TextInput id="address" type="text" sizing="md" />
+                    </div>
+
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="descount">Descuento (%)</Label>
+                        </div>
+                        <TextInput id="descount" type="number" min={0} max={100} step={1} sizing="md" value={descount} onChange={v => setDescount(v.target.value)} />
+                    </div>
+
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="pay">Total a debitar ($)</Label>
+                        </div>
+                        <TextInput id="pay" type="text" sizing="md" value={price} readOnly />
+                    </div>
+
                 </div>
 
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="precio">Precio por producto ($)</Label>
-                    </div>
-                    <TextInput id="precio" type="number" sizing="md" value={state.precio} readOnly />
-                </div>
             </div>
-
-
-            <h1 className=" text-white mt-5">Datos del cliente</h1>
-
-            <div>
-
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="nombre">Nombre</Label>
-                    </div>
-                    <TextInput id="nombre" type="text" sizing="md" />
-                </div>
-
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="address">Dirección</Label>
-                    </div>
-                    <TextInput id="address" type="text" sizing="md" />
-                </div>
-
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="descaount">Descuento (%)</Label>
-                    </div>
-                    <TextInput id="descount" type="number" min={0} max={100} step={1} sizing="md" value={descount} onChange={v => setDescount(v.target.value)} />
-                </div>
-
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="pay">Total a debitar ($)</Label>
-                    </div>
-                    <TextInput id="pay" type="text" sizing="md" value={price} readOnly />
-                </div>
-
+            <div className="flex justify-end mt-2 gap-2">
+                <ButtonCmp path="/" name="Cancelar"  />
+                <Button size="sm" onClick={sendClient}>Enviar</Button>
             </div>
-
         </section>
     )
 }

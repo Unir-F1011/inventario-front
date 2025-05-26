@@ -51,8 +51,8 @@ function Dashboard() {
                     <TableHead>
                         <TableRow>
                             {
-                                columns.map(col => (
-                                    <TableHeadCell>{col}</TableHeadCell>
+                                columns.map((col, index) => (
+                                    <TableHeadCell key={index}>{col}</TableHeadCell>
 
 
                                 ))
@@ -64,8 +64,8 @@ function Dashboard() {
                         {
                             data.length > 0 ? (
 
-                                data?.map(payload => (
-                                    <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                                data?.map((payload, index) => (
+                                    <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800" key={index}>
                                         <TableCell>
                                             {
                                                 payload.id
