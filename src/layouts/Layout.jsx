@@ -3,6 +3,7 @@ import './../common/css/app.css'
 import { Bounce } from 'react-toastify';
 import { VerticalBar } from '../common/components/VerticalBar';
 import { BrowserTree } from '../common/components/BrowserTree';
+import { ScaleLoader } from "react-spinners";
 
 
 function Layout() {
@@ -20,7 +21,7 @@ function Layout() {
                 transition={Bounce}
                 theme="colored"
             />
-
+           
             <div className='flex w-full h-screen'>
                 <VerticalBar />
                 <BrowserTree />

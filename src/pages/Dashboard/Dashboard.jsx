@@ -36,7 +36,7 @@ function Dashboard() {
         }
     }, [key, value])
 
-   
+
 
     return (
         <section>
@@ -46,79 +46,83 @@ function Dashboard() {
                 <TextInput id="value" type="text" sizing="sm" placeholder="valor" value={value} onChange={v => setValue(v.target.value)} />
 
             </div>
-            <div className="overflow-auto max-h-[100%]">
-                <Table hoverable>
-                    <TableHead>
-                        <TableRow>
-                            {
-                                columns.map((col, index) => (
-                                    <TableHeadCell key={index}>{col}</TableHeadCell>
 
-
-                                ))
-                            }
-                        </TableRow>
-                    </TableHead>
-
-                    <TableBody>
+            <Table hoverable style={{
+                display: "block",
+                height: "80svh",
+                overflowY: "auto",
+            }}>
+                <TableHead>
+                    <TableRow>
                         {
-                            data.length > 0 ? (
+                            columns.map((col, index) => (
+                                <TableHeadCell key={index}>{col}</TableHeadCell>
 
-                                data?.map((payload, index) => (
-                                    <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800" key={index}>
-                                        <TableCell>
-                                            {
-                                                payload.id
-                                            }
-                                        </TableCell>
-                                        <TableCell>
-                                            {
-                                                payload.producto
-                                            }
-                                        </TableCell>
-                                        <TableCell>
-                                            {
-                                                payload.color
-                                            }
-                                        </TableCell>
-                                        <TableCell>
-                                            {
-                                                payload.categoria
-                                            }
-                                        </TableCell>
-                                        <TableCell>
-                                            {
-                                                payload.precio
-                                            }
-                                        </TableCell>
-                                        <TableCell>
-                                            {
-                                                payload.dimensiones
-                                            }
-                                        </TableCell>
-                                        <TableCell>
-                                            {
-                                                payload.total
-                                            }
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="flex wrap gap-2">
-                                               <ButtonCmp path="/client" name="Enviar a cliente" state={payload} />
-                                               <ButtonCmp path="/delete" name="Eliminar articulo" state={payload} />
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
 
-                                )
-                                )
-
-                            ) : ("Loading data...")
+                            ))
                         }
+                    </TableRow>
+                </TableHead>
 
-                    </TableBody>
+                <TableBody >
+                    {
+                        data.length > 0 ? (
 
-                </Table>
-            </div>
+                            data?.map((payload, index) => (
+                                <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800" key={index}>
+                                    <TableCell>
+                                        {
+                                            payload.id
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            payload.producto
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            payload.color
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            payload.categoria
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            payload.precio
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            payload.dimensiones
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            payload.total
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex wrap gap-2">
+                                            <ButtonCmp path="/client" name="Enviar a cliente" state={payload} />
+                                            <ButtonCmp path="/delete" name="Eliminar articulo" state={payload} />
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+
+                            )
+                            )
+
+                        ) : ("Loading data...")
+                    }
+
+                </TableBody>
+
+            </Table>
+
             <div className="flex overflow-x-auto sm:justify-center">
                 <Pagination
                     currentPage={currentPage}

@@ -1,13 +1,19 @@
-import { Label, TextInput } from "flowbite-react";
+import { Button, Label, TextInput } from "flowbite-react";
+import { ButtonCmp } from "../../common/components/Button";
 
 function PlaceOrder() {
 
+    const makeOrder = () => {
+
+        console.log("Ejecuto")
+    }
 
     return (
-        <section className="bg-black min-w-md p-5 mt-20 rounded-xl">
-            <h1 className="text-white flex justify-center">Crear Orden</h1>
-            <div className="flex max-w-lg gap-10 items-top">
-                <div>
+        <section className="bg-black px-auto p-4 mt-20 rounded-xl">
+            <h1 className="text-white flex justify-center mb-5 mt-2">Crear Orden</h1>
+            <div className="flex min-w-md gap-10 items-top">
+
+                <div className="flex flex-col w-full gap-2">
                     <h1 className="text-white mb-1"> Datos del Producto</h1>
                     <div>
                         <div className="mb-2 block">
@@ -41,8 +47,8 @@ function PlaceOrder() {
                         <TextInput id="total" type="number" step={1} min={0} sizing="md" />
                     </div>
                 </div>
-                <div>
 
+                <div className="flex flex-col w-full gap-2">
                     <h1 className="text-white mb-1">Datos del proveedor</h1>
                     <div>
                         <div className="mb-2 block">
@@ -64,10 +70,10 @@ function PlaceOrder() {
                     </div>
 
                 </div>
-
-
-
-
+            </div>
+            <div className="flex justify-end mt-2 gap-2">
+                <ButtonCmp path="/" name="Cancelar" />
+                <Button size="sm" onClick={makeOrder}>Enviar</Button>
             </div>
         </section>
     )

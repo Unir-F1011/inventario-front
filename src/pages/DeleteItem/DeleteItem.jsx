@@ -11,14 +11,24 @@ function DeleteItem() {
     }
 
     return (
-        <section className="bg-black min-w-md p-5 rounded-xl mt-20">
-            <h1 className="text-white mb-1 flex justify-center font-bold">Eliminar producto</h1>
-            <div>
-                <div className="mb-2 block">
-                    <Label htmlFor="id">ID</Label>
+        <section className="bg-black p-4 rounded-xl mt-20">
+            <h1 className="text-white mb-2 flex justify-center font-bold">Eliminar producto</h1>
+            <div className="flex gap-10 items-top">
+
+                <div className="flex flex-col w-full gap-2">
+                    <div className="mb-2 block">
+                        <Label htmlFor="id">ID</Label>
+                    </div>
+                    <TextInput id="id" type="text" sizing="md" value={state.id} readOnly />
                 </div>
-                <TextInput id="id" type="text" sizing="md" value={state.id} readOnly />
+                <div className="flex flex-col w-full gap-2">
+                    <div className="mb-2 block">
+                        <Label htmlFor="name">Producto</Label>
+                    </div>
+                    <TextInput id="name" type="text" sizing="md" value={state.producto} readOnly />
+                </div>
             </div>
+
 
             <div className="flex justify-end mt-2 gap-2">
                 <ButtonCmp path="/" name="Cancelar" />

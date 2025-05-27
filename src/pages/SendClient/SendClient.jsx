@@ -27,9 +27,9 @@ function SendClient() {
     return (
         <section className="bg-black p-4 rounded-xl mt-20">
             <h1 className="text-white flex justify-center mb-5 mt-2 font-bold">Enviar a clientes</h1>
-            <div className="flex gap-5 items-top">
+            <div className="flex gap-10 items-top">
 
-                <div className="flex min-w-md flex-col gap-4">
+                <div className="flex w-full flex-col gap-2">
                     <h1 className="text-white">Datos del Producto</h1>
                     <div>
                         <div className="mb-2 block">
@@ -67,7 +67,7 @@ function SendClient() {
 
 
 
-                <div className="flex min-w-md flex-col gap-4">
+                <div className="flex w-full flex-col gap-2">
                     <h1 className=" text-white">Datos del cliente</h1>
 
                     <div>
