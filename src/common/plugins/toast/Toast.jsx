@@ -1,32 +1,30 @@
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-const Msg = ({ title, descripcion, type }) => {
+const Msg = ({ title}) => {
     return (
-        <div className="w-auto">
+        <div className=" w-auto">
             <h2 className="text-xl">{title}</h2>
-            <div>
-                <p className="font-thin">{descripcion}</p>
-            </div>
         </div>
+
     );
 };
 
 // Para mostrar un toast
-export const showToast = ({ title, descripcion, type }) => {
-    toast(<Msg title={title} descripcion={descripcion} type={type} />, {
-        type,
-        transition: Bounce,
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
+export const showToast = (title, type ) => {
+    toast(<Msg title={title} />, {
+        type:type,
+        stacked: true,
+        autoClose: 5000,
         closeOnClick: true,
+        rtl: false,
+        pauseOnFocusLoss: false,
+        draggable: false,
         pauseOnHover: true,
-        draggable: true,
+        hideProgressBar: true,
+        theme: "dark",
+        role: "alert",
+        position: "bottom-right",
+        transition: Bounce,
     });
-};
-
-// Componente contenedor para los toasts
-export const ToastAlertsContainer = (props) => {
-    return <ToastContainer {...props} />;
 };

@@ -2,6 +2,7 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { ButtonCmp } from "../../common/components/Button";
+import { showToast } from "../../common/plugins/toast/Toast";
 
 
 function SendClient() {
@@ -22,6 +23,7 @@ function SendClient() {
 
     const sendClient = () => {
         console.log("Ejecutado")
+        showToast("Envío a cliente completado", "success")
     }
 
     return (

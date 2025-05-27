@@ -1,7 +1,8 @@
-import { Button, Pagination, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react"
+import { Pagination, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react"
 import { useEffect, useState } from "react";
 import mock from "./../../mocks/data.json"
 import { ButtonCmp } from "../../common/components/Button";
+import { RotateLoader } from "react-spinners";
 
 
 function Dashboard() {
@@ -9,6 +10,7 @@ function Dashboard() {
     const [data, setData] = useState([])
     const [key, setKey] = useState("")
     const [value, setValue] = useState()
+    const [spinner, setSpinner] = useState(false)
     const columns = [
         "Id",
         "Producto",
@@ -23,24 +25,28 @@ function Dashboard() {
     const onPageChange = (page) => setCurrentPage(page);
 
     useEffect(() => {
+        setSpinner(true)
         if (mock != "") {
             setData(mock.data)
         }
 
         console.log("useEffect ", data)
+        setSpinner(false)
     }, [currentPage])
 
     useEffect(() => {
+        setSpinner(true)
         if (key.length >= 3 && value.length >= 3) {
             console.log("AFAF", key, value)
         }
+        setSpinner(false)
     }, [key, value])
 
 
 
     return (
         <section>
-
+            <RotateLoader color="#f1f0f0" loading={spinner} />
             <div className="flex gap-2 mb-2">
                 <TextInput id="key" type="text" sizing="sm" placeholder="columna" value={key} onChange={k => setKey(k.target.value)} />
                 <TextInput id="value" type="text" sizing="sm" placeholder="valor" value={value} onChange={v => setValue(v.target.value)} />

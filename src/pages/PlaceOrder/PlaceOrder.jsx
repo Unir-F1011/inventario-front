@@ -1,11 +1,12 @@
 import { Button, Label, TextInput } from "flowbite-react";
 import { ButtonCmp } from "../../common/components/Button";
+import { showToast } from "../../common/plugins/toast/Toast"
 
 function PlaceOrder() {
 
     const makeOrder = () => {
-
         console.log("Ejecuto")
+        showToast("Orden creada satisfactoriamente", "success")
     }
 
     return (
@@ -71,7 +72,7 @@ function PlaceOrder() {
 
                 </div>
             </div>
-            <div className="flex justify-end mt-2 gap-2">
+            <div className="flex justify-end mt-10 gap-2">
                 <ButtonCmp path="/" name="Cancelar" />
                 <Button size="sm" onClick={makeOrder}>Enviar</Button>
             </div>

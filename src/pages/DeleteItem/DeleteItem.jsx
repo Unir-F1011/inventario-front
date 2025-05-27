@@ -1,6 +1,8 @@
 import { Button, Label, TextInput } from "flowbite-react";
 import { useLocation } from "react-router-dom";
 import { ButtonCmp } from "../../common/components/Button";
+import { showToast } from "../../common/plugins/toast/Toast"
+
 
 function DeleteItem() {
     const { state } = useLocation()
@@ -8,6 +10,8 @@ function DeleteItem() {
 
     const deleteItem = () => {
         console.log("Ejecutado")
+        showToast("Eliminado de producto completado", "success")
+        
     }
 
     return (
@@ -30,7 +34,7 @@ function DeleteItem() {
             </div>
 
 
-            <div className="flex justify-end mt-2 gap-2">
+            <div className="flex justify-end mt-10 gap-2">
                 <ButtonCmp path="/" name="Cancelar" />
                 <Button size="sm" onClick={deleteItem}>Enviar</Button>
             </div>
