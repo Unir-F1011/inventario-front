@@ -1,4 +1,3 @@
-import { ToastAlertsContainer } from "./../common/plugins/toast/Toast"
 import { VerticalBar } from '../common/components/VerticalBar';
 import { BrowserTree } from '../common/components/BrowserTree';
 import { ToastContainer } from "react-toastify";

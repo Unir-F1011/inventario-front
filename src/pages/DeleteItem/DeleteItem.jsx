@@ -4,14 +4,16 @@ import { ButtonCmp } from "../../common/components/Button";
 import { showToast } from "../../common/plugins/toast/Toast"
 
 
+const domain = process.env.REACT_DOMAIN_API
+
 function DeleteItem() {
     const { state } = useLocation()
     console.log("hoo -> ", state)
 
     const deleteItem = () => {
-        console.log("Ejecutado")
+        const url = `${domain}/stock`
+        console.log("Ejecutado", url)
         showToast("Eliminado de producto completado", "success")
-        
     }
 
     return (

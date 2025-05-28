@@ -8,5 +8,8 @@ export default defineConfig({
   plugins: [tailwindcss(), react(), flowbiteReact()],
   server: {
     historyApiFallback: true, // Para que funcione correctamente BrowserRouter en desarrollo
+  },
+  define: {
+    'process.env': {},
   }
 })

@@ -5,6 +5,8 @@ import { ButtonCmp } from "../../common/components/Button";
 import { showToast } from "../../common/plugins/toast/Toast";
 
 
+const domain = process.env.REACT_DOMAIN_API
+
 function SendClient() {
     const { state } = useLocation()
     const [total, setTotal] = useState(1)
@@ -22,7 +24,8 @@ function SendClient() {
 
 
     const sendClient = () => {
-        console.log("Ejecutado")
+        const url = `${domain}/client`
+        console.log("Ejecutado", url)
         showToast("Envío a cliente completado", "success")
     }
 

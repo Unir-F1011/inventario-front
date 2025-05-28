@@ -12,4 +12,36 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --spinner-color: #1786d0;
+  --background-color: #070b29db;
+  --foreground-color: #eef1f3;
+}
+
+
+/* Clases siguiendo el estilo BEM */
+
+.sideBar {
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+}
+
+.sideBar_list {
+
+}
+
+.table {
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  font-size: medium;
+}
+
+.table_header {
+  font-weight: bold;
+}
+
+.table_body {
+  font-weight: 500;
+}
+
+.table_body-action {
+
 }
