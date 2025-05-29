@@ -10,7 +10,7 @@ function Layout() {
         <main>
             <ToastContainer />
            
-            <div className='flex w-full h-screen'>
+            <div className='flex h-screen'>
                 <VerticalBar />
                 <BrowserTree />
             </div>

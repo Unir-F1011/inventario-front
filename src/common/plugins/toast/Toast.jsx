@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Msg = ({ title}) => {
     return (
-        <div className=" w-auto">
+        <div className="table w-auto">
             <h2 className="text-xl">{title}</h2>
         </div>
 

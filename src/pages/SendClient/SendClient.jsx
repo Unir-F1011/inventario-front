@@ -30,12 +30,12 @@ function SendClient() {
     }
 
     return (
-        <section className="bg-black p-4 rounded-xl mt-20">
-            <h1 className="text-white flex justify-center mb-5 mt-2 font-bold">Enviar a clientes</h1>
+        <section className="table p-4 rounded-xl mt-20">
+            <h1 className="flex justify-center mb-5 mt-2 font-bold">Enviar a clientes</h1>
             <div className="flex gap-10 items-top">
 
                 <div className="flex w-full flex-col gap-2">
-                    <h1 className="text-white">Datos del Producto</h1>
+                    <h1 className="">Datos del Producto</h1>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="id">ID</Label>
@@ -73,7 +73,7 @@ function SendClient() {
 
 
                 <div className="flex w-full flex-col gap-2">
-                    <h1 className=" text-white">Datos del cliente</h1>
+                    <h1 className="">Datos del cliente</h1>
 
                     <div>
                         <div className="mb-2 block">
@@ -108,7 +108,7 @@ function SendClient() {
             </div>
             <div className="flex justify-end mt-2 gap-2">
                 <ButtonCmp path="/" name="Cancelar"  />
-                <Button size="sm" onClick={sendClient}>Enviar</Button>
+                <Button size="sm" onClick={sendClient} className="table_body-buttons">Enviar</Button>
             </div>
         </section>
     )

@@ -2,21 +2,21 @@ import { Link as RouterLink } from "react-router-dom"
 
 export const VerticalBar = () => {
     return (
-        <aside id="verticalBar" className="fixed top-0 left-0 z-40 w-fit h-screen" aria-label="Sidebar">
+        <aside id="verticalBar" className="w-40 h-screen" aria-label="Sidebar">
             <div className="h-full px-3 py-4 overflow-y-auto sideBar">
-                <ul className="space-y-2 font-medium">
-                    <li>
-                        <h1 className="text-white font-bold">Operaciones</h1>
+                <ul className="space-y-2">
+                    <li >
+                        <h1 className="font-bold">Operaciones</h1>
                     </li>
-                    <li>
+                    <li className=" hover:bg-gray-500 hover:rounded-md w-full">
                         <RouterLink to="/">
-                            <span className="ms-3 text-white">Tabla</span>
+                            <span className="ms-3">Tabla</span>
                         </RouterLink>
                     </li>
 
-                    <li>
+                    <li className=" hover:bg-gray-500 hover:rounded-md w-full">
                         <RouterLink to="/order" >
-                            <span className="flex-1 ms-3 whitespace-nowrap text-white">Crear Orden</span>
+                            <span className="ms-3">Crear Orden</span>
                         </RouterLink>
                     </li>
                 </ul>

@@ -14,12 +14,12 @@ function PlaceOrder() {
     }
 
     return (
-        <section className="bg-black px-auto p-4 mt-20 rounded-xl">
-            <h1 className="text-white flex justify-center mb-5 mt-2">Crear Orden</h1>
+        <section className="table px-auto p-4 mt-20 rounded-xl">
+            <h1 className="flex justify-center mb-5 mt-2">Crear Orden</h1>
             <div className="flex min-w-md gap-10 items-top">
 
                 <div className="flex flex-col w-full gap-2">
-                    <h1 className="text-white mb-1"> Datos del Producto</h1>
+                    <h1 className="mb-1"> Datos del Producto</h1>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="producto">Producto</Label>
@@ -54,7 +54,7 @@ function PlaceOrder() {
                 </div>
 
                 <div className="flex flex-col w-full gap-2">
-                    <h1 className="text-white mb-1">Datos del proveedor</h1>
+                    <h1 className="mb-1">Datos del proveedor</h1>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="nombre">Nombre</Label>
@@ -78,7 +78,7 @@ function PlaceOrder() {
             </div>
             <div className="flex justify-end mt-10 gap-2">
                 <ButtonCmp path="/" name="Cancelar" />
-                <Button size="sm" onClick={makeOrder}>Enviar</Button>
+                <Button size="sm" onClick={makeOrder} className="table_body-buttons">Enviar</Button>
             </div>
         </section>
     )

@@ -44,7 +44,7 @@ function Dashboard() {
 
     useEffect(() => {
         const url = `${domain}/stock?page=${currentPage}&${key}=${value}`
-        if (key.length >= 3 && value.length >= 3) {
+        if (key?.length >= 3 && value?.length >= 3) {
            searchData(url)
         }
     },[key,value])
@@ -62,17 +62,17 @@ function Dashboard() {
                 top: "50%", left: "50%"
             }} />
             <div className="flex gap-2 mb-2">
-                <TextInput id="key" type="text" sizing="sm" placeholder="columna" value={key} onChange={k => setKey(k.target.value)} />
-                <TextInput id="value" type="text" sizing="sm" placeholder="valor" value={value} onChange={v => setValue(v.target.value)} />
+                <TextInput id="key" type="text" sizing="sm" placeholder="columna" value={key} className="inputs rounded-lg" onChange={k => setKey(k.target.value)} />
+                <TextInput id="value" type="text" sizing="sm" placeholder="valor" value={value} className="inputs rounded-lg" onChange={v => setValue(v.target.value)} />
 
             </div>
 
             <Table hoverable style={{
                 display: "block",
                 height: "80svh",
-                overflowY: "auto",
-            }} className="table">
-                <TableHead>
+                overflowY: "scroll",
+            }} className="table border rounded-lg">
+                <TableHead className="table__header">
                     <TableRow>
                         {
                             columns.map((col, index) => (
@@ -82,7 +82,7 @@ function Dashboard() {
                     </TableRow>
                 </TableHead>
 
-                <TableBody >
+                <TableBody className="table__body">
                     {
                         !state.loading ? (
 

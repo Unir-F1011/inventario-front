@@ -17,8 +17,8 @@ function DeleteItem() {
     }
 
     return (
-        <section className="bg-black p-4 rounded-xl mt-20">
-            <h1 className="text-white mb-2 flex justify-center font-bold">Eliminar producto</h1>
+        <section className="table p-4 rounded-xl mt-20">
+            <h1 className="mb-2 flex justify-center font-bold">Eliminar producto</h1>
             <div className="flex gap-10 items-top">
 
                 <div className="flex flex-col w-full gap-2">
@@ -38,7 +38,7 @@ function DeleteItem() {
 
             <div className="flex justify-end mt-10 gap-2">
                 <ButtonCmp path="/" name="Cancelar" />
-                <Button size="sm" onClick={deleteItem}>Enviar</Button>
+                <Button size="sm" onClick={deleteItem} className="table__body-buttons">Enviar</Button>
             </div>
         </section>
     )

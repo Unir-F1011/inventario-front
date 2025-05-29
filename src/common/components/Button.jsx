@@ -12,7 +12,7 @@ export const ButtonCmp = ({path, name, state}) => {
         })
     }
     return (
-        <Button className=" rounded-md bg-blue-700 text-white" size="sm" onClick={router}>
+        <Button className="rounded-md table_body-buttons" size="sm" onClick={router}>
             <span>{name}</span>
         </Button>
     )
