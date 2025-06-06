@@ -1,6 +1,6 @@
 import { Button, Label, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ButtonCmp } from "../../common/components/Button";
 import { showToast } from "../../common/plugins/toast/Toast";
 
@@ -12,6 +12,7 @@ function SendClient() {
     const [total, setTotal] = useState(1)
     const [price, setPrice] = useState(state.precio)
     const [descount, setDescount] = useState(1)
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (total == 0) return
@@ -27,6 +28,7 @@ function SendClient() {
         const url = `${domain}/client`
         console.log("Ejecutado", url)
         showToast("Envío a cliente completado", "success")
+        navigate("/")
     }
 
     return (

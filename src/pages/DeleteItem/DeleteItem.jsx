@@ -1,5 +1,5 @@
 import { Button, Label, TextInput } from "flowbite-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ButtonCmp } from "../../common/components/Button";
 import { showToast } from "../../common/plugins/toast/Toast"
 
@@ -9,11 +9,13 @@ const domain = process.env.REACT_DOMAIN_API
 function DeleteItem() {
     const { state } = useLocation()
     console.log("hoo -> ", state)
+    const navigate = useNavigate()
 
     const deleteItem = () => {
         const url = `${domain}/stock`
         console.log("Ejecutado", url)
         showToast("Eliminado de producto completado", "success")
+        navigate("/")
     }
 
     return (

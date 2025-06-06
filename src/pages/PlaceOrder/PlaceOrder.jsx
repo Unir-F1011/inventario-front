@@ -1,16 +1,19 @@
 import { Button, Label, TextInput } from "flowbite-react";
 import { ButtonCmp } from "../../common/components/Button";
 import { showToast } from "../../common/plugins/toast/Toast"
+import { useNavigate } from "react-router-dom";
 
 
 const domain = process.env.REACT_DOMAIN_API
 
 function PlaceOrder() {
+    const navigate = useNavigate()
 
     const makeOrder = () => {
         const url = `${domain}/oreder`
         console.log("Ejecuto", url)
         showToast("Orden creada satisfactoriamente", "success")
+        navigate("/")
     }
 
     return (
