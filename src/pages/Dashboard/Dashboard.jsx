@@ -3,13 +3,13 @@ import { useEffect, useReducer, useState } from "react";
 import mock from "./../../mocks/data.json"
 import { ButtonCmp } from "../../common/components/Button";
 import { RotateLoader } from "react-spinners";
-import customState from "../../common/hooks/customHook";
+import useCustomState from "../../common/hooks/useCustomHook";
 
 const domain = process.env.REACT_DOMAIN_API
 
 function Dashboard() {
     const [currentPage, setCurrentPage] = useState(1);
-    const [state, setState] = useReducer(customState, {
+    const [state, setState] = useReducer(useCustomState, {
         data: [], loading: true, error: false
     })
     const [key, setKey] = useState("")

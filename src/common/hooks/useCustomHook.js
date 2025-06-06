@@ -1,7 +1,7 @@
 
 
 
-function customState(states, action) {
+function useCustomState(states, action) {
     switch (action.type) {
         case 'LOADING':
             return {
@@ -22,4 +22,4 @@ function customState(states, action) {
 }
 
 
-export default customState
+export default useCustomState
