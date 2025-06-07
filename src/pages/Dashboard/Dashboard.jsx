@@ -1,4 +1,4 @@
-import { Pagination, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react"
+import { Button, Pagination, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react"
 import { useEffect, useReducer, useState } from "react";
 import mock from "./../../mocks/data.json"
 import { ButtonCmp } from "../../common/components/Button";
@@ -12,18 +12,19 @@ function Dashboard() {
     const [state, setState] = useReducer(useCustomState, {
         data: [], loading: true, error: false
     })
-    const [key, setKey] = useState("")
-    const [value, setValue] = useState()
+    
+    const [search, setSearch] = useState("")
     const columns = [
         "Id",
         "Producto",
         "Color",
         "Categoría",
         "Precio ($)",
-        "Dimensiones",
+        "Fabricante",
         "Total",
         "Acciones"
     ]
+    const size = 10
 
     const searchData = (url) => {
         setState({ type: "LOADING" })
@@ -35,23 +36,22 @@ function Dashboard() {
         }
     } 
 
+    const getSearch = () => {
+        const url = `${domain}/stock?page=${currentPage}&size=${size}&query=${search}`
+        searchData(url)
+        setSearch("")
+    }
+
     const onPageChange = (page) => setCurrentPage(page);
 
     useEffect(() => {
-        const url = `${domain}/stock?page=${currentPage}&${key}=${value}`
+        const url = `${domain}/stock?page=${currentPage}&size=${size}`
         searchData(url)
     }, [currentPage])
 
-    useEffect(() => {
-        const url = `${domain}/stock?page=${currentPage}&${key}=${value}`
-        if (key?.length >= 3 && value?.length >= 3) {
-           searchData(url)
-        }
-    },[key,value])
-
     // Carga inicial
     useEffect(() => {
-        const url = `${domain}/stock?page=${currentPage}`
+        const url = `${domain}/stock?page=${currentPage}&size=${size}`
         searchData(url)
     },[])
 
@@ -61,10 +61,9 @@ function Dashboard() {
                 position: "fixed", zIndex: 9999,
                 top: "50%", left: "50%"
             }} />
-            <div className="flex gap-2 mb-2">
-                <TextInput id="key" type="text" sizing="sm" placeholder="columna" value={key} className="inputs rounded-lg" onChange={k => setKey(k.target.value)} />
-                <TextInput id="value" type="text" sizing="sm" placeholder="valor" value={value} className="inputs rounded-lg" onChange={v => setValue(v.target.value)} />
-
+            <div className="flex gap-2 mb-2 items-center">
+                <TextInput id="search" type="text" sizing="md" placeholder="Laptops..." value={search} className="inputs rounded-sm w-80" onChange={k => setSearch(k.target.value)} />
+                <Button size="md" onClick={getSearch} className="table_body-buttons">Buscar</Button>
             </div>
 
             <Table hoverable style={{
@@ -115,7 +114,7 @@ function Dashboard() {
                                     </TableCell>
                                     <TableCell>
                                         {
-                                            payload.dimensiones
+                                            payload.fabricante
                                         }
                                     </TableCell>
                                     <TableCell>
