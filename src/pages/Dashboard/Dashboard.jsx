@@ -4,6 +4,7 @@ import mock from "./../../mocks/data.json"
 import { ButtonCmp } from "../../common/components/Button";
 import { RotateLoader } from "react-spinners";
 import useCustomState from "../../common/hooks/useCustomHook";
+import { Facets } from "../../common/components/Facets";
 
 const domain = process.env.REACT_DOMAIN_API
 
@@ -12,7 +13,9 @@ function Dashboard() {
     const [state, setState] = useReducer(useCustomState, {
         data: [], loading: true, error: false
     })
-    
+    const [category, setCategory] = useState("")
+    const [creator, setCreator] = useState("")
+
     const [search, setSearch] = useState("")
     const columns = [
         "Id",
@@ -34,7 +37,7 @@ function Dashboard() {
         } else {
             setState({ type: "ERROR" })
         }
-    } 
+    }
 
     const getSearch = () => {
         const url = `${domain}/stock?page=${currentPage}&size=${size}&query=${search}`
@@ -53,7 +56,14 @@ function Dashboard() {
     useEffect(() => {
         const url = `${domain}/stock?page=${currentPage}&size=${size}`
         searchData(url)
-    },[])
+    }, [])
+
+    useEffect(()=> {
+        const url = `${domain}/stock?page=${currentPage}&size=${size}&category=${category}&creator=${creator}`
+        searchData(url)
+    }, [category, creator])
+
+    // crear sugerencias de búsquedas
 
     return (
         <section>
@@ -61,10 +71,16 @@ function Dashboard() {
                 position: "fixed", zIndex: 9999,
                 top: "50%", left: "50%"
             }} />
-            <div className="flex gap-2 mb-2 items-center">
-                <TextInput id="search" type="text" sizing="md" placeholder="Laptops..." value={search} className="inputs rounded-sm w-80" onChange={k => setSearch(k.target.value)} />
-                <Button size="md" onClick={getSearch} className="table_body-buttons">Buscar</Button>
+            <div className="flex flex-wrap gap-2 items-center justify-between">
+
+                <div className="flex gap-2 mb-2 items-center">
+                    <TextInput id="search" type="text" sizing="md" placeholder="Búsqueda por texto" value={search} className="inputs rounded-sm w-80" onChange={k => setSearch(k.target.value)} />
+                    <Button size="md" onClick={getSearch} className="table_body-buttons">Buscar</Button>
+                </div>
+
+                <Facets setCategory={setCategory} setCreator={setCreator} />
             </div>
+
 
             <Table hoverable style={{
                 display: "block",
