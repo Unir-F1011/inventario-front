@@ -46,9 +46,9 @@ function SendClient() {
                     </div>
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="nombre">Nombre</Label>
+                            <Label htmlFor="product">Nombre</Label>
                         </div>
-                        <TextInput id="nombre" type="text" sizing="md" value={state.product} readOnly />
+                        <TextInput id="product" type="text" sizing="md" value={state.product} readOnly />
                     </div>
                     <div>
                         <div className="mb-2 block">
@@ -79,9 +79,9 @@ function SendClient() {
 
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="nombre">Nombre</Label>
+                            <Label htmlFor="name">Nombre</Label>
                         </div>
-                        <TextInput id="nombre" type="text" sizing="md" />
+                        <TextInput id="name" type="text" sizing="md" />
                     </div>
 
                     <div>
@@ -100,9 +100,9 @@ function SendClient() {
 
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="pay">Total a debitar ($)</Label>
+                            <Label htmlFor="payment">Total a debitar ($)</Label>
                         </div>
-                        <TextInput id="pay" type="text" sizing="md" value={price} readOnly />
+                        <TextInput id="payment" type="text" sizing="md" value={price} readOnly />
                     </div>
 
                 </div>
