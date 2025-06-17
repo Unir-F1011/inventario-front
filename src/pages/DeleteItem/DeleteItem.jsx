@@ -8,7 +8,6 @@ const domain = process.env.REACT_DOMAIN_API
 
 function DeleteItem() {
     const { state } = useLocation()
-    console.log("hoo -> ", state)
     const navigate = useNavigate()
 
     const deleteItem = () => {
@@ -31,9 +30,9 @@ function DeleteItem() {
                 </div>
                 <div className="flex flex-col w-full gap-2">
                     <div className="mb-2 block">
-                        <Label htmlFor="name">Producto</Label>
+                        <Label htmlFor="product">Producto</Label>
                     </div>
-                    <TextInput id="name" type="text" sizing="md" value={state.producto} readOnly />
+                    <TextInput id="product" type="text" sizing="md" value={state.product} readOnly />
                 </div>
             </div>
 

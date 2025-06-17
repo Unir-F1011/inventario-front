@@ -110,7 +110,7 @@ function Dashboard() {
                                     </TableCell>
                                     <TableCell>
                                         {
-                                            payload.producto
+                                            payload.product
                                         }
                                     </TableCell>
                                     <TableCell>
@@ -120,17 +120,17 @@ function Dashboard() {
                                     </TableCell>
                                     <TableCell>
                                         {
-                                            payload.categoria
+                                            payload.category
                                         }
                                     </TableCell>
                                     <TableCell>
                                         {
-                                            payload.precio
+                                            payload.price
                                         }
                                     </TableCell>
                                     <TableCell>
                                         {
-                                            payload.fabricante
+                                            payload.manufacturer
                                         }
                                     </TableCell>
                                     <TableCell>

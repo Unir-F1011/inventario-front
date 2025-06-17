@@ -25,9 +25,9 @@ function PlaceOrder() {
                     <h1 className="mb-1"> Datos del Producto</h1>
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="producto">Producto</Label>
+                            <Label htmlFor="product">Producto</Label>
                         </div>
-                        <TextInput id="producto" type="text" sizing="md" />
+                        <TextInput id="product" type="text" sizing="md" />
                     </div>
                     <div>
                         <div className="mb-2 block">
@@ -37,16 +37,16 @@ function PlaceOrder() {
                     </div>
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="categoria">Categoría</Label>
+                            <Label htmlFor="category">Categoría</Label>
                         </div>
-                        <TextInput id="categoria" type="text" sizing="md" />
+                        <TextInput id="category" type="text" sizing="md" />
                     </div>
 
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="color">Precio</Label>
+                            <Label htmlFor="price">Precio</Label>
                         </div>
-                        <TextInput id="color" type="text" sizing="md" />
+                        <TextInput id="price" type="text" sizing="md" />
                     </div>
                     <div>
                         <div className="mb-2 block">
@@ -60,9 +60,9 @@ function PlaceOrder() {
                     <h1 className="mb-1">Datos del proveedor</h1>
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="nombre">Nombre</Label>
+                            <Label htmlFor="name">Nombre</Label>
                         </div>
-                        <TextInput id="nombre" type="text" sizing="md" />
+                        <TextInput id="name" type="text" sizing="md" />
                     </div>
                     <div>
                         <div className="mb-2 block">
@@ -72,9 +72,9 @@ function PlaceOrder() {
                     </div>
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="telefono">Teléfono</Label>
+                            <Label htmlFor="tel">Teléfono</Label>
                         </div>
-                        <TextInput id="telefono" type="tel" sizing="md" />
+                        <TextInput id="tel" type="tel" sizing="md" />
                     </div>
 
                 </div>

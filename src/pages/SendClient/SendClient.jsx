@@ -10,7 +10,7 @@ const domain = process.env.REACT_DOMAIN_API
 function SendClient() {
     const { state } = useLocation()
     const [total, setTotal] = useState(1)
-    const [price, setPrice] = useState(state.precio)
+    const [price, setPrice] = useState(state.price)
     const [descount, setDescount] = useState(1)
     const navigate = useNavigate()
 
@@ -48,13 +48,13 @@ function SendClient() {
                         <div className="mb-2 block">
                             <Label htmlFor="nombre">Nombre</Label>
                         </div>
-                        <TextInput id="nombre" type="text" sizing="md" value={state.producto} readOnly />
+                        <TextInput id="nombre" type="text" sizing="md" value={state.product} readOnly />
                     </div>
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="dimensiones">Dimensiones  (alto, archo, prfundidad)</Label>
+                            <Label htmlFor="category">Categoría</Label>
                         </div>
-                        <TextInput id="dimensiones" type="text" sizing="md" value={state.dimensiones} readOnly />
+                        <TextInput id="category" type="text" sizing="md" value={state.category} readOnly />
                     </div>
 
                     <div>
