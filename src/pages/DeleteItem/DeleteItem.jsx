@@ -11,8 +11,8 @@ function DeleteItem() {
     const navigate = useNavigate()
 
     const deleteItem = () => {
-        const url = `${domain}/stock`
-        console.log("Ejecutado", url)
+        const url = `${domain}/ms-operator/v1/items/${state.id}`
+        
         showToast("Eliminado de producto completado", "success")
         navigate("/")
     }

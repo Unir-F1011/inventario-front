@@ -2,17 +2,43 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { ButtonCmp } from "../../common/components/Button";
 import { showToast } from "../../common/plugins/toast/Toast"
 import { useNavigate } from "react-router-dom";
+import DoRequest from "../../common/services/services";
+import { useRef } from "react";
 
 
 const domain = process.env.REACT_DOMAIN_API
 
 function PlaceOrder() {
     const navigate = useNavigate()
+    const product = useRef(null)
+    const color = useRef(null)
+    const category = useRef(null)
+    const price = useRef(null)
+    const total = useRef(null)
+    const name = useRef(null)
+    const email = useRef(null)
+    const tel = useRef(null)
 
-    const makeOrder = () => {
-        const url = `${domain}/oreder`
-        console.log("Ejecuto", url)
-        showToast("Orden creada satisfactoriamente", "success")
+
+    const makeOrder = async () => {
+        const url = `${domain}/ms-operator/v1/orders`
+        const payload = {
+            "product": product.current.value,
+            "color": color.current.value,
+            "category": category.current.value,
+            "price": price.current.value,
+            "total": total.current.value,
+            "name": name.current.value,
+            "email": email.current.value,
+            "tel": tel.current.value
+        }
+        const resp = await DoRequest(url, "POST", payload)
+        if (resp.status == 201) {
+            showToast("Orden creada satisfactoriamente", "success")
+
+        } else {
+            showToast("Error creando orden", "error")
+        }
         navigate("/")
     }
 
@@ -27,32 +53,32 @@ function PlaceOrder() {
                         <div className="mb-2 block">
                             <Label htmlFor="product">Producto</Label>
                         </div>
-                        <TextInput id="product" type="text" sizing="md" />
+                        <TextInput id="product" type="text" sizing="md" ref={product} />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="color">Color</Label>
                         </div>
-                        <TextInput id="color" type="text" sizing="md" />
+                        <TextInput id="color" type="text" sizing="md" ref={color} />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="category">Categoría</Label>
                         </div>
-                        <TextInput id="category" type="text" sizing="md" />
+                        <TextInput id="category" type="text" sizing="md" ref={category} />
                     </div>
 
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="price">Precio</Label>
                         </div>
-                        <TextInput id="price" type="text" sizing="md" />
+                        <TextInput id="price" type="text" sizing="md" ref={price} />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="total">Total</Label>
                         </div>
-                        <TextInput id="total" type="number" step={1} min={0} sizing="md" />
+                        <TextInput id="total" type="number" step={1} min={0} sizing="md" ref={total} />
                     </div>
                 </div>
 
@@ -62,19 +88,19 @@ function PlaceOrder() {
                         <div className="mb-2 block">
                             <Label htmlFor="name">Nombre</Label>
                         </div>
-                        <TextInput id="name" type="text" sizing="md" />
+                        <TextInput id="name" type="text" sizing="md" ref={name} />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="email">Email</Label>
                         </div>
-                        <TextInput id="email" type="email" sizing="md" />
+                        <TextInput id="email" type="email" sizing="md" ref={email} />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="tel">Teléfono</Label>
                         </div>
-                        <TextInput id="tel" type="tel" sizing="md" />
+                        <TextInput id="tel" type="tel" sizing="md" ref={tel} />
                     </div>
 
                 </div>

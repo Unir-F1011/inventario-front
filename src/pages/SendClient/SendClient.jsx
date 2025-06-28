@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ButtonCmp } from "../../common/components/Button";
 import { showToast } from "../../common/plugins/toast/Toast";
+import DoRequest from "../../common/services/services";
 
 
 const domain = process.env.REACT_DOMAIN_API
@@ -11,23 +12,30 @@ function SendClient() {
     const { state } = useLocation()
     const [total, setTotal] = useState(1)
     const [price, setPrice] = useState(state.price)
-    const [descount, setDescount] = useState(1)
+    const [discount, setDiscount] = useState(1)
     const navigate = useNavigate()
 
     useEffect(() => {
         if (total == 0) return
         const t = total * price
-        const pd = t * (descount / 100)
+        const pd = t * (discount / 100)
         const r = t - pd
         setPrice(Math.round((r)))
 
     }, [total, descount])
 
 
-    const sendClient = () => {
-        const url = `${domain}/client`
-        console.log("Ejecutado", url)
-        showToast("Envío a cliente completado", "success")
+    const sendClient = async () => {
+        const url = `${domain}/ms-operator/v1/shipments`
+        const payload = {...state, total, discount}
+        console.log("Payload ", payload)
+        const resp = await DoRequest(url, "POST", payload)
+        if (resp.status == 201) {
+            showToast("Envío a cliente completado", "success")
+        }else {
+            showToast("Error en el envío", "error")
+        }
+
         navigate("/")
     }
 
@@ -95,7 +103,7 @@ function SendClient() {
                         <div className="mb-2 block">
                             <Label htmlFor="descount">Descuento (%)</Label>
                         </div>
-                        <TextInput id="descount" type="number" min={0} max={100} step={1} sizing="md" value={descount} onChange={v => setDescount(v.target.value)} />
+                        <TextInput id="descount" type="number" min={0} max={100} step={1} sizing="md" value={discount} onChange={v => setDiscount(v.target.value)} />
                     </div>
 
                     <div>

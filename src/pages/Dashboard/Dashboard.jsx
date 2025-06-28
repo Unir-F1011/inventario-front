@@ -27,7 +27,6 @@ function Dashboard() {
         "Total",
         "Acciones"
     ]
-    const size = 10
 
     const searchData = (url) => {
         setState({ type: "LOADING" })
@@ -39,31 +38,12 @@ function Dashboard() {
         }
     }
 
-    const getSearch = () => {
-        const url = `${domain}/stock?page=${currentPage}&size=${size}&query=${search}`
-        searchData(url)
-        setSearch("")
-    }
-
     const onPageChange = (page) => setCurrentPage(page);
 
     useEffect(() => {
-        const url = `${domain}/stock?page=${currentPage}&size=${size}`
+        const url = `${domain}/ms-search/v1/items?page=${currentPage}&category=${category}&manufacturer=${creator}&product=${search}`
         searchData(url)
-    }, [currentPage])
-
-    // Carga inicial
-    useEffect(() => {
-        const url = `${domain}/stock?page=${currentPage}&size=${size}`
-        searchData(url)
-    }, [])
-
-    useEffect(()=> {
-        const url = `${domain}/stock?page=${currentPage}&size=${size}&category=${category}&creator=${creator}`
-        searchData(url)
-    }, [category, creator])
-
-    // crear sugerencias de búsquedas
+    }, [category, creator, search])
 
     return (
         <section>
@@ -75,7 +55,6 @@ function Dashboard() {
 
                 <div className="flex gap-2 mb-2 items-center">
                     <TextInput id="search" type="text" sizing="md" placeholder="Búsqueda por texto" value={search} className="inputs rounded-sm w-80" onChange={k => setSearch(k.target.value)} />
-                    <Button size="md" onClick={getSearch} className="table_body-buttons">Buscar</Button>
                 </div>
 
                 <Facets setCategory={setCategory} setCreator={setCreator} />
