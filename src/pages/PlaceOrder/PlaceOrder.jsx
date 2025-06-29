@@ -6,7 +6,7 @@ import DoRequest from "../../common/services/services";
 import { useRef } from "react";
 
 
-const domain = process.env.REACT_DOMAIN_API
+const domain = import.meta.env.VITE_API_URL
 
 function PlaceOrder() {
     const navigate = useNavigate()
@@ -18,20 +18,24 @@ function PlaceOrder() {
     const name = useRef(null)
     const email = useRef(null)
     const tel = useRef(null)
+    const manufacturer = useRef(null)
 
 
     const makeOrder = async () => {
         const url = `${domain}/ms-operator/v1/orders`
+        
         const payload = {
             "product": product.current.value,
             "color": color.current.value,
             "category": category.current.value,
-            "price": price.current.value,
-            "total": total.current.value,
+            "price": parseFloat(price.current.value),
+            "total": parseInt(total.current.value),
             "name": name.current.value,
             "email": email.current.value,
-            "tel": tel.current.value
+            "tel": tel.current.value,
+            "manufacturer": manufacturer.current.value 
         }
+
         const resp = await DoRequest(url, "POST", payload)
         if (resp.status == 201) {
             showToast("Orden creada satisfactoriamente", "success")
@@ -72,14 +76,23 @@ function PlaceOrder() {
                         <div className="mb-2 block">
                             <Label htmlFor="price">Precio</Label>
                         </div>
-                        <TextInput id="price" type="text" sizing="md" ref={price} />
+                        <TextInput id="price" type="number" sizing="md" ref={price} />
                     </div>
+
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="total">Total</Label>
                         </div>
                         <TextInput id="total" type="number" step={1} min={0} sizing="md" ref={total} />
                     </div>
+
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="manufacturer">Fabricante</Label>
+                        </div>
+                        <TextInput id="manufacturer" type="text" sizing="md" ref={manufacturer} />
+                    </div>
+
                 </div>
 
                 <div className="flex flex-col w-full gap-2">

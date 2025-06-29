@@ -1,12 +1,12 @@
-import { Button, Pagination, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react"
+import { Pagination, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react"
 import { useEffect, useReducer, useState } from "react";
-import mock from "./../../mocks/data.json"
 import { ButtonCmp } from "../../common/components/Button";
 import { RotateLoader } from "react-spinners";
 import useCustomState from "../../common/hooks/useCustomHook";
 import { Facets } from "../../common/components/Facets";
+import DoRequest from "../../common/services/services";
 
-const domain = process.env.REACT_DOMAIN_API
+const domain = import.meta.env.VITE_API_URL
 
 function Dashboard() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -28,11 +28,12 @@ function Dashboard() {
         "Acciones"
     ]
 
-    const searchData = (url) => {
+    const searchData = async (url) => {
         setState({ type: "LOADING" })
-        if (mock != "") {
-            setState({ type: "FETCHING", payload: mock.data })
-
+        const resp = await DoRequest(url, "GET")
+        if (resp.status == 200) {
+            const payload = await resp.json()
+            setState({ type: "FETCHING", payload: payload.items })
         } else {
             setState({ type: "ERROR" })
         }
@@ -41,13 +42,27 @@ function Dashboard() {
     const onPageChange = (page) => setCurrentPage(page);
 
     useEffect(() => {
-        const url = `${domain}/ms-search/v1/items?page=${currentPage}&category=${category}&manufacturer=${creator}&product=${search}`
-        searchData(url)
-    }, [category, creator, search])
+        let url = `${domain}/ms-search/v1/items?page=${currentPage}`
+
+        if (category != "") {
+            url += `&category=${category}`
+        } else if (creator != "") {
+            url += `&manufacturer=${creator}`
+        } else if (search != "") {
+            url += `&product=${search}`
+        }
+
+
+        const helper = async () => {
+            await searchData(url)
+        }
+
+        helper()
+    }, [category, creator, search, currentPage])
 
     return (
         <section>
-            <RotateLoader color="#f1f0f0" loading={state.loading} cssOverride={{
+            <RotateLoader color="#1F2937" loading={state.loading} cssOverride={{
                 position: "fixed", zIndex: 9999,
                 top: "50%", left: "50%"
             }} />
@@ -60,80 +75,84 @@ function Dashboard() {
                 <Facets setCategory={setCategory} setCreator={setCreator} />
             </div>
 
+            <div className="min-w-[80em] flex items-center">
+                <Table hoverable style={{
+                    display: "block",
+                    maxHeight: "80svh",
+                    minHeight: "50%",
+                    overflowY: "scroll",
+                    overflowX: "scroll",
+                }} className="table border rounded-lg">
+                    <TableHead className="table__header">
+                        <TableRow>
+                            {
+                                columns.map((col, index) => (
+                                    <TableHeadCell key={index}>{col}</TableHeadCell>
+                                ))
+                            }
+                        </TableRow>
+                    </TableHead>
 
-            <Table hoverable style={{
-                display: "block",
-                height: "80svh",
-                overflowY: "scroll",
-            }} className="table border rounded-lg">
-                <TableHead className="table__header">
-                    <TableRow>
+                    <TableBody className="table__body">
                         {
-                            columns.map((col, index) => (
-                                <TableHeadCell key={index}>{col}</TableHeadCell>
-                            ))
+                            !state.loading ? (
+
+                                state.data?.map((payload, index) => (
+                                    <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800" key={index}>
+                                        <TableCell>
+                                            {
+                                                payload.id
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.product
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.color
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.category
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.price
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.manufacturer
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                payload.total
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex wrap gap-2">
+                                                <ButtonCmp path="/client" name="Enviar a cliente" state={payload} />
+                                                <ButtonCmp path="/delete" name="Eliminar articulo" state={payload} />
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+
+                                )
+                                )
+
+                            ) : ("Loading data...")
                         }
-                    </TableRow>
-                </TableHead>
 
-                <TableBody className="table__body">
-                    {
-                        !state.loading ? (
+                    </TableBody>
 
-                            state.data?.map((payload, index) => (
-                                <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800" key={index}>
-                                    <TableCell>
-                                        {
-                                            payload.id
-                                        }
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            payload.product
-                                        }
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            payload.color
-                                        }
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            payload.category
-                                        }
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            payload.price
-                                        }
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            payload.manufacturer
-                                        }
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            payload.total
-                                        }
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex wrap gap-2">
-                                            <ButtonCmp path="/client" name="Enviar a cliente" state={payload} />
-                                            <ButtonCmp path="/delete" name="Eliminar articulo" state={payload} />
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
+                </Table>
+            </div>
 
-                            )
-                            )
-
-                        ) : ("Loading data...")
-                    }
-
-                </TableBody>
-
-            </Table>
 
             <div className="flex overflow-x-auto sm:justify-center">
                 <Pagination

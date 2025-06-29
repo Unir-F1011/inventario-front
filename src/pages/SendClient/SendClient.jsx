@@ -1,34 +1,43 @@
 import { Button, Label, TextInput } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ButtonCmp } from "../../common/components/Button";
 import { showToast } from "../../common/plugins/toast/Toast";
 import DoRequest from "../../common/services/services";
 
 
-const domain = process.env.REACT_DOMAIN_API
+const domain = import.meta.env.VITE_API_URL
 
 function SendClient() {
     const { state } = useLocation()
     const [total, setTotal] = useState(1)
-    const [price, setPrice] = useState(state.price)
+    const [payment, setPayment] = useState(state.price)
     const [discount, setDiscount] = useState(1)
+    const address = useRef(null)
+    const name = useRef(null)
+
     const navigate = useNavigate()
 
     useEffect(() => {
         if (total == 0) return
-        const t = total * price
+        const t = total * state.price
         const pd = t * (discount / 100)
         const r = t - pd
-        setPrice(Math.round((r)))
+        setPayment(Math.round((r)))
 
-    }, [total, descount])
+    }, [total, discount])
 
 
     const sendClient = async () => {
         const url = `${domain}/ms-operator/v1/shipments`
-        const payload = {...state, total, discount}
-        console.log("Payload ", payload)
+        const payload = {
+            "name": name.current.value,
+            "address": address.current.value,
+            discount,
+            total,
+            payment,
+            ...state
+        }
         const resp = await DoRequest(url, "POST", payload)
         if (resp.status == 201) {
             showToast("Envío a cliente completado", "success")
@@ -76,7 +85,7 @@ function SendClient() {
                         <div className="mb-2 block">
                             <Label htmlFor="precio">Precio por producto ($)</Label>
                         </div>
-                        <TextInput id="precio" type="number" sizing="md" value={state.precio} readOnly />
+                        <TextInput id="precio" type="number" sizing="md" value={state.price} readOnly />
                     </div>
                 </div>
 
@@ -89,28 +98,28 @@ function SendClient() {
                         <div className="mb-2 block">
                             <Label htmlFor="name">Nombre</Label>
                         </div>
-                        <TextInput id="name" type="text" sizing="md" />
+                        <TextInput id="name" type="text" sizing="md" ref={name} />
                     </div>
 
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="address">Dirección</Label>
                         </div>
-                        <TextInput id="address" type="text" sizing="md" />
+                        <TextInput id="address" type="text" sizing="md" ref={address} />
                     </div>
 
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="descount">Descuento (%)</Label>
+                            <Label htmlFor="discount">Descuento (%)</Label>
                         </div>
-                        <TextInput id="descount" type="number" min={0} max={100} step={1} sizing="md" value={discount} onChange={v => setDiscount(v.target.value)} />
+                        <TextInput id="discount" type="number" min={0} max={100} step={0.5} sizing="md" value={discount} onChange={v => setDiscount(v.target.value)} />
                     </div>
 
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="payment">Total a debitar ($)</Label>
                         </div>
-                        <TextInput id="payment" type="text" sizing="md" value={price} readOnly />
+                        <TextInput id="payment" type="text" sizing="md" value={payment} readOnly />
                     </div>
 
                 </div>

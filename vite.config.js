@@ -9,7 +9,4 @@ export default defineConfig({
   server: {
     historyApiFallback: true, // Para que funcione correctamente BrowserRouter en desarrollo
   },
-  define: {
-    'process.env': {},
-  }
 })

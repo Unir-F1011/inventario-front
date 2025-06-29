@@ -4,7 +4,7 @@ import { ButtonCmp } from "../../common/components/Button";
 import { showToast } from "../../common/plugins/toast/Toast"
 
 
-const domain = process.env.REACT_DOMAIN_API
+const domain = import.meta.env.VITE_API_URL
 
 function DeleteItem() {
     const { state } = useLocation()

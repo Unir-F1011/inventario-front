@@ -1,8 +1,16 @@
-async function DoRequest(url, method, body) {
-    return await fetch(url, {
-        method: method,
-        body: JSON.parse(body)
-    })
+async function DoRequest(url, method = 'GET', body = null) {
+    const opts = {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+
+    if (body !== null) {
+        opts.body = JSON.stringify(body);
+    }
+
+    return await fetch(url, opts)
 }
 
-export default DoRequest
+export default DoRequest;
