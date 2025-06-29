@@ -33,10 +33,15 @@ function SendClient() {
         const payload = {
             "name": name.current.value,
             "address": address.current.value,
+            "id": state.id,
+            "price": state.price,
+            "product": state.product,
+            "category": state.category,
+            "color": state.color,
+            "manufacturer": state.manufacturer,
             discount,
             total,
-            payment,
-            ...state
+            payment
         }
         const resp = await DoRequest(url, "POST", payload)
         if (resp.status == 201) {
