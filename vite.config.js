@@ -8,5 +8,12 @@ export default defineConfig({
   plugins: [tailwindcss(), react(), flowbiteReact()],
   server: {
     historyApiFallback: true, // Para que funcione correctamente BrowserRouter en desarrollo
+    proxy:{
+      '/api': {
+        target:"http://89.116.157.76:8762",
+        changeOrigin: true, 
+        rewrite: (path) => path.replace(/^\/api/,'')
+      }
+    }
   },
 })
