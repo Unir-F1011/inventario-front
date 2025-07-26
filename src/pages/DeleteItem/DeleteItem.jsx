@@ -2,6 +2,7 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ButtonCmp } from "../../common/components/Button";
 import { showToast } from "../../common/plugins/toast/Toast"
+import DoRequest from "../../common/services/services";
 
 
 const domain = import.meta.env.VITE_API_URL
@@ -10,10 +11,14 @@ function DeleteItem() {
     const { state } = useLocation()
     const navigate = useNavigate()
 
-    const deleteItem = () => {
+    const deleteItem = async () => {
         const url = `${domain}/ms-operator/v1/items/${state.id}`
-        
-        showToast("Eliminado de producto completado", "success")
+        const resp = await DoRequest(url, "DELETE")
+        if (resp.status == 201) {
+            showToast("Eliminado de producto completado", "success")
+        } else {
+            showToast("Error eliminado articulo", "error")
+        }
         navigate("/")
     }
 

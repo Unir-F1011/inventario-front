@@ -2,7 +2,10 @@ async function DoRequest(url, method = 'GET', body = null) {
     const opts = {
         method,
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
+            "Accept":"*/*",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Connection": "keep-alive"
         }
     };
 
