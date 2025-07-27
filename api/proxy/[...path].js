@@ -2,18 +2,18 @@
 
 const BACKEND_BASE = "http://89.116.157.76:8762"; 
 
-export default async function handler(req, res) {
-    const { path = [] } = req.query;
-
-    const query = req.url.includes('?') ? `?${req.url.split('?')[1]}` : '';
-    const fullUrl = `${BACKEND_BASE}/${path.join('/')}${query}`;
+export default async function handler(req, res) {    
+    const urlObject = new URL(req.url, `http://${req.headers.host}`)
+    const pathAndQuery = urlObject.pathname +  urlObject.search
+    const clean = pathAndQuery.replace(/^\/api\/proxy/, '')
+    const fullUrl = BACKEND_BASE + clean
 
     try {
         const response = await fetch(fullUrl, {
             method: req.method,
             headers: {
                 ...req.headers,
-                host: '', // Evita conflictos con host en servidores HTTP
+                host: '', 
             },
             body:
                 ['GET', 'HEAD'].includes(req.method)
