@@ -40,16 +40,15 @@ export default async function handler(request, response) {
 
         response.statusCode = backendResponse.status;
         backendResponse.headers.forEach((value, name) => {
-            if (name.toLowerCase() !== 'content-encoding' && // Vercel/Node.js puede manejar la descompresión
+            if (name.toLowerCase() !== 'content-encoding' && 
                 name.toLowerCase() !== 'connection' &&
                 name.toLowerCase() !== 'transfer-encoding') {
                 response.setHeader(name, value);
             }
         });
 
-        // Leer el cuerpo de la respuesta del backend y enviarlo
-        const responseBuffer = await backendResponse.arrayBuffer(); // Lee el cuerpo como un ArrayBuffer
-        response.end(Buffer.from(responseBuffer)); // Envía el Buffer al cliente
+        const responseBuffer = await backendResponse.arrayBuffer(); 
+        response.end(Buffer.from(responseBuffer));
 
     } catch (error) {
         console.error('[Proxy ERROR]:', error.message);
