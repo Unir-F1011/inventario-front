@@ -1,7 +1,3 @@
-// api/index.js
-
-// Usamos 'node-fetch' si estás en un entorno Node.js < 18,
-// de lo contrario, 'fetch' es nativo.
 import fetch from 'node-fetch';
 import { URL } from 'url';
 
@@ -26,7 +22,10 @@ export default async function handler(request, response) {
         if (Object.keys(request?.body).length > 1 ) {
             option = {
                 method: request.method,
-                headers: request.headers,
+                headers: {
+                    ...request.headers,
+                    "Content-Type": "application/json",
+                },
                 body: request.body ? JSON.stringify(request.body) : null
             }
         }else {
