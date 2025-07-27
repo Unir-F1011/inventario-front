@@ -14,7 +14,7 @@ function DeleteItem() {
     const deleteItem = async () => {
         const url = `${domain}/ms-operator/v1/items/${state.id}`
         const resp = await DoRequest(url, "DELETE")
-        if (resp.status == 201) {
+        if (resp.status == 202) {
             showToast("Eliminado de producto completado", "success")
         } else {
             showToast("Error eliminado articulo", "error")

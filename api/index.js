@@ -1,3 +1,7 @@
+// api/index.js
+
+// Usamos 'node-fetch' si estás en un entorno Node.js < 18,
+// de lo contrario, 'fetch' es nativo.
 import fetch from 'node-fetch';
 import { URL } from 'url';
 
@@ -6,41 +10,74 @@ const BACKEND_URL = 'http://89.116.157.76:8762';
 
 export default async function handler(request, response) {
     try {
-        // 1. Obtener la URL completa de la solicitud entrante
-        // 'request.url' en Vercel es la URL relativa, por ejemplo: '/api/ms-search/v1/items?page=1'
         const fullUrl = new URL(request.url, `http://${request.headers.host}`);
-        const pathname = fullUrl.pathname;
-        const searchParams = fullUrl.search;
+        let backendPath = fullUrl.pathname;
+        let searchParams = fullUrl.searchParams;
 
-        // 2. Construir la URL completa para el backend remoto
-        // Se elimina el prefijo '/api' que Vercel añade
-        const backendPath = pathname.startsWith('/api') ? pathname.substring(4) : pathname;
-        const finalUrl = `${BACKEND_URL}${backendPath}${searchParams}`;
-
-        console.log('Proxying request to:', finalUrl);
-
-        // 3. Realizar la petición GET al backend remoto
-        const backendResponse = await fetch(finalUrl);
-
-        // Si la respuesta del backend no es exitosa, lanzar un error
-        if (!backendResponse.ok) {
-            const errorText = await backendResponse.text();
-            throw new Error(`Backend request failed with status ${backendResponse.status}: ${errorText}`);
+        if (backendPath.startsWith('/api')) {
+            backendPath = backendPath.substring(4);
+        }
+        let finalUrl = `${BACKEND_URL}${backendPath}`;
+        if (searchParams.toString()) {
+            finalUrl += `?${searchParams.toString()}`;
         }
 
-        // 4. Copiar los headers y el body de la respuesta del backend
-        // a la respuesta de tu API de Vercel
-        const data = await backendResponse.json();
+        let option = {}
+        if (Object.keys(request?.body).length > 1 ) {
+            option = {
+                method: request.method,
+                headers: request.headers,
+                body: request.body ? JSON.stringify(request.body) : null
+            }
+        }else {
+            option = {
+                method: request.method,
+                headers: request.headers,
+            }
+        }
+        
+        const backendResponse = await fetch(finalUrl, option);
 
-        // Puedes pasar otros headers si lo necesitas, por ejemplo, Content-Type
-        response.setHeader('Content-Type', 'application/json');
         response.statusCode = backendResponse.status;
-        response.end(JSON.stringify(data));
+        backendResponse.headers.forEach((value, name) => {
+            if (name.toLowerCase() !== 'content-encoding' && // Vercel/Node.js puede manejar la descompresión
+                name.toLowerCase() !== 'connection' &&
+                name.toLowerCase() !== 'transfer-encoding') {
+                response.setHeader(name, value);
+            }
+        });
+
+        // Leer el cuerpo de la respuesta del backend y enviarlo
+        const responseBuffer = await backendResponse.arrayBuffer(); // Lee el cuerpo como un ArrayBuffer
+        response.end(Buffer.from(responseBuffer)); // Envía el Buffer al cliente
 
     } catch (error) {
-        console.error('Error in proxy request:', error.message);
-        response.statusCode = 500;
+        console.error('[Proxy ERROR]:', error.message);
+        let statusCode = 500;
+        let details = error.message;
+
+        // Intentar extraer el status code si es un error del backend
+        if (error.message.includes('Backend request failed with status')) {
+            const match = error.message.match(/status (\d+)/);
+            if (match && match[1]) {
+                statusCode = parseInt(match[1], 10);
+                // Si hay un body de error, intentar parsearlo para detalles
+                try {
+                    details = JSON.parse(error.message.split(': ')[2]); // Asumiendo formato "status NNN: {json_body}"
+                } catch (e) {
+                    // No es JSON, usar el texto completo
+                    details = error.message.split(': ')[2];
+                }
+            }
+        }
+
+        response.statusCode = statusCode;
         response.setHeader('Content-Type', 'application/json');
-        response.end(JSON.stringify({ error: 'Internal Server Error', details: error.message }));
+        response.end(JSON.stringify({
+            error: 'Proxy Error',
+            details: details,
+            targetUrl: BACKEND_URL,
+            timestamp: new Date().toISOString()
+        }));
     }
 }
