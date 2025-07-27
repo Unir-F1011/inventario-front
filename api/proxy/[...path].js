@@ -1,24 +1,24 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
 const BACKEND_BASE = 'http://89.116.157.76:8762';
 
 export default async function handler(req, res) {
     try {
-        const origin = `http://${req.headers.host}`;
-        const urlObj = new URL(req.url, origin);
-        const pathAndQuery = urlObj.pathname + urlObj.search;
-        const cleanPath = pathAndQuery.replace(/^\/api\/proxy/, '/');
-        const targetUrl = BACKEND_BASE.replace(/\/$/, '') + cleanPath;
+        // Obtener el path dinámico que viene después de /api/proxy/
+        const { path = [] } = req.query;
+        const targetPath = Array.isArray(path) ? path.join('/') : path;
 
-        const { host, connection, 'keep-alive': keepAlive, 'transfer-encoding': transfer, ...forwardHeaders } = req.headers;
+        const targetUrl = `${BACKEND_BASE}/${targetPath}${req.url.includes('?') ? req.url.split('?')[1] ? '?' + req.url.split('?')[1] : '' : ''}`;
+
+        console.log('🔁 Proxying to:', targetUrl);
+
+        // Excluir headers que no deberían reenviarse
+        const { host, connection, 'content-length': _, ...forwardHeaders } = req.headers;
 
         const fetchOptions = {
             method: req.method,
             headers: forwardHeaders,
-            // Para GET/HEAD no enviamos body
             body: ['GET', 'HEAD'].includes(req.method)
                 ? undefined
-                : req.body && typeof req.body === 'object'
+                : typeof req.body === 'object'
                     ? JSON.stringify(req.body)
                     : req.body,
         };
@@ -26,17 +26,19 @@ export default async function handler(req, res) {
         const response = await fetch(targetUrl, fetchOptions);
 
         res.status(response.status);
+
+        // Pasar headers de vuelta al cliente
         response.headers.forEach((value, key) => {
             if (!['connection', 'keep-alive', 'transfer-encoding'].includes(key.toLowerCase())) {
                 res.setHeader(key, value);
             }
         });
 
-    
+        // Enviar la respuesta según el tipo
         const contentType = response.headers.get('content-type') || '';
         if (contentType.includes('application/json')) {
-            const json = await response.json();
-            res.json(json);
+            const data = await response.json();
+            res.json(data);
         } else {
             const text = await response.text();
             res.send(text);
@@ -46,3 +48,10 @@ export default async function handler(req, res) {
         res.status(500).json({ error: 'Proxy failed', details: error.message });
     }
 }
+
+// Permitir que Next.js parsee JSON
+export const config = {
+    api: {
+        bodyParser: true,
+    },
+};
