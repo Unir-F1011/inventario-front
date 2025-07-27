@@ -7,7 +7,7 @@ export default async function handler(req, res) {
         const origin = `http://${req.headers.host}`;
         const urlObj = new URL(req.url, origin);
         const pathAndQuery = urlObj.pathname + urlObj.search;
-        const cleanPath = pathAndQuery.replace(/^\/api\/proxy/, '');
+        const cleanPath = pathAndQuery.replace(/^\/api\/proxy/, '/');
         const targetUrl = BACKEND_BASE.replace(/\/$/, '') + cleanPath;
 
         const { host, connection, 'keep-alive': keepAlive, 'transfer-encoding': transfer, ...forwardHeaders } = req.headers;
