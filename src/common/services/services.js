@@ -4,8 +4,6 @@ async function DoRequest(url, method = 'GET', body = null) {
         headers: {
             "Content-Type": "application/json",
             "Accept":"*/*",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Connection": "keep-alive"
         }
     };
 
