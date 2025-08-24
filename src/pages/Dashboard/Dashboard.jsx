@@ -10,6 +10,7 @@ const domain = import.meta.env.VITE_API_URL
 
 function Dashboard() {
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1); 
     const [state, setState] = useReducer(useCustomState, {
         data: [], loading: true, error: false
     })
@@ -17,6 +18,7 @@ function Dashboard() {
     const [creator, setCreator] = useState("")
 
     const [search, setSearch] = useState("")
+    const pageSize = 10 
     const columns = [
         "Id",
         "Producto",
@@ -33,7 +35,15 @@ function Dashboard() {
         const resp = await DoRequest(url, "GET")
         if (resp.status == 200) {
             const payload = await resp.json()
+            //COSC -- Limite en paginas
             setState({ type: "FETCHING", payload: payload.items })
+            if (payload.items.length < pageSize) {
+                // última página, porque ya no llenó los 10
+                setTotalPages(currentPage);
+            } else {
+                // asumimos que hay más
+                setTotalPages(currentPage + 1);
+            }
         } else {
             setState({ type: "ERROR" })
         }
@@ -157,7 +167,7 @@ function Dashboard() {
             <div className="flex overflow-x-auto sm:justify-center">
                 <Pagination
                     currentPage={currentPage}
-                    totalPages={100}
+                    totalPages={totalPages}
                     onPageChange={onPageChange}
                     nextLabel="Siguiente"
                     previousLabel="Anterior"
