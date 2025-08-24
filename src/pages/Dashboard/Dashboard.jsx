@@ -76,7 +76,7 @@ function Dashboard() {
                 position: "fixed", zIndex: 9999,
                 top: "50%", left: "50%"
             }} />
-            <div className="flex flex-wrap gap-2 items-center justify-between">
+            <div className="flex flex-wrap gap-2 items-center justify-between mx-auto px-4 sm:px-6 lg:px-8">
 
                 <div className="flex gap-2 mb-2 items-center">
                     <TextInput id="search" type="text" sizing="md" placeholder="Búsqueda por texto" value={search} className="inputs rounded-sm w-80" onChange={k => setSearch(k.target.value)} />
@@ -85,7 +85,7 @@ function Dashboard() {
                 <Facets setCategory={setCategory} setCreator={setCreator} />
             </div>
 
-            <div className="min-w-[80em] flex items-center">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <Table hoverable style={{
                     display: "block",
                     maxHeight: "80svh",
