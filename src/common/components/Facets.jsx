@@ -8,6 +8,8 @@ export const Facets = ({ setCategory, setCreator }) => {
   const [selectedCategory, setSelectedCategory] = useState("")
   const [selectedCreator, setSelectedCreator] = useState("")
 
+
+
   // Al montar el componente pedimos categorías y fabricantes
   useEffect(() => {
     const fetchData = async () => {
