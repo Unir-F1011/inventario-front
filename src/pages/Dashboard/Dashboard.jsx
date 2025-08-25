@@ -10,6 +10,7 @@ const domain = import.meta.env.VITE_API_URL
 
 function Dashboard() {
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1); 
     const [state, setState] = useReducer(useCustomState, {
         data: [], loading: true, error: false
     })
@@ -17,6 +18,7 @@ function Dashboard() {
     const [creator, setCreator] = useState("")
 
     const [search, setSearch] = useState("")
+    const pageSize = 10 
     const columns = [
         "Id",
         "Producto",
@@ -33,7 +35,15 @@ function Dashboard() {
         const resp = await DoRequest(url, "GET")
         if (resp.status == 200) {
             const payload = await resp.json()
+            //COSC -- Limite en paginas
             setState({ type: "FETCHING", payload: payload.items })
+            if (payload.items.length < pageSize) {
+                // última página, porque ya no llenó los 10
+                setTotalPages(currentPage);
+            } else {
+                // asumimos que hay más
+                setTotalPages(currentPage + 1);
+            }
         } else {
             setState({ type: "ERROR" })
         }
@@ -66,7 +76,7 @@ function Dashboard() {
                 position: "fixed", zIndex: 9999,
                 top: "50%", left: "50%"
             }} />
-            <div className="flex flex-wrap gap-2 items-center justify-between">
+            <div className="flex flex-wrap gap-2 items-center justify-between mx-auto px-4 sm:px-6 lg:px-8">
 
                 <div className="flex gap-2 mb-2 items-center">
                     <TextInput id="search" type="text" sizing="md" placeholder="Búsqueda por texto" value={search} className="inputs rounded-sm w-80" onChange={k => setSearch(k.target.value)} />
@@ -75,7 +85,7 @@ function Dashboard() {
                 <Facets setCategory={setCategory} setCreator={setCreator} />
             </div>
 
-            <div className="min-w-[80em] flex items-center">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <Table hoverable style={{
                     display: "block",
                     maxHeight: "80svh",
@@ -157,7 +167,7 @@ function Dashboard() {
             <div className="flex overflow-x-auto sm:justify-center">
                 <Pagination
                     currentPage={currentPage}
-                    totalPages={100}
+                    totalPages={totalPages}
                     onPageChange={onPageChange}
                     nextLabel="Siguiente"
                     previousLabel="Anterior"
