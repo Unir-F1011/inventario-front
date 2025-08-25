@@ -30,8 +30,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Exponer el puerto
-#EXPOSE 5050
-EXPOSE 80
+EXPOSE 5050
+#EXPOSE 80
 
 # Comando por defecto
 CMD ["nginx", "-g", "daemon off;"]
