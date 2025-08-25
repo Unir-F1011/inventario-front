@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { URL } from 'url';
 
 // URL base de tu backend remoto
-const BACKEND_URL = 'http://89.116.157.76:8762';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default async function handler(request, response) {
     try {
