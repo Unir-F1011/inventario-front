@@ -38,7 +38,6 @@
   --toastify-text-color-light: #757575;
   --toastify-text-color-dark: #fff;
 
-
   --toastify-text-color-info: #fff;
   --toastify-text-color-success: #fff;
   --toastify-text-color-warning: #fff;
@@ -46,13 +45,15 @@
 
   --toastify-spinner-color: #616161;
   --toastify-spinner-color-empty-area: #e0e0e0;
-   --toastify-color-progress-light: linear-gradient(to right,
-      #4cd964,
-      #5ac8fa,
-      #007aff,
-      #34aadc,
-      #5856d6,
-      #ff2d55);
+  --toastify-color-progress-light: linear-gradient(
+    to right,
+    #4cd964,
+    #5ac8fa,
+    #007aff,
+    #34aadc,
+    #5856d6,
+    #ff2d55
+  );
 
   --toastify-color-progress-dark: #bb86fc;
   --toastify-color-progress-info: var(--toastify-color-info);
@@ -60,13 +61,12 @@
   --toastify-color-progress-warning: var(--toastify-color-warning);
   --toastify-color-progress-error: var(--toastify-color-error);
 
-   --toastify-color-progress-bgo: .2;
+  --toastify-color-progress-bgo: 0.2;
 }
 
 ::-webkit-scrollbar {
   display: none;
 }
-
 
 /* Clases siguiendo el estilo BEM */
 
@@ -95,6 +95,13 @@
 .table__body-buttons {
   background-color: var(--button-background);
   color: var(--foreground-color);
+  padding: 0.5rem 1rem;
+  min-width: 120px;
+  white-space: nowrap;
+  text-align: center;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .inputs {
