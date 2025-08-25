@@ -9,35 +9,44 @@ const domain = import.meta.env.VITE_OPERATOR_URL;
 
 function SendClient() {
     const { state } = useLocation();
-    const [total, setTotal] = useState(1);
-    const [payment, setPayment] = useState(state.price);
-    const [discount, setDiscount] = useState(1);
-    const address = useRef(null);
-    const name = useRef(null);
     const navigate = useNavigate();
 
+    // If navigated directly without state, redirect home.
     useEffect(() => {
-        if (total === 0) return;
-        const t = total * state.price;
-        const pd = t * (discount / 100);
-        const r = t - pd;
-        setPayment(Math.round(r));
-    }, [total, discount, state.price]);
+        if (!state) navigate("/");
+    }, [state, navigate]);
 
-    const sendClient = async () => {
+    const [total, setTotal] = useState(1);
+    const [discount, setDiscount] = useState(1);
+    const [payment, setPayment] = useState(state?.price || 0);
+
+    const address = useRef(null);
+    const name = useRef(null);
+
+    useEffect(() => {
+        if (!state) return;
+        if (Number(total) === 0) return;
+        const t = Number(total) * Number(state.price);
+        const pd = t * (Number(discount) / 100);
+        setPayment(Math.round(t - pd));
+    }, [total, discount, state]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!state) return;
         const url = `${domain}/v1/shipments`;
         const payload = {
-            name: name.current.value,
-            address: address.current.value,
+            name: name.current.value.trim(),
+            address: address.current.value.trim(),
             id: state.id,
             price: state.price,
             product: state.product,
             category: state.category,
             color: state.color,
             manufacturer: state.manufacturer,
-            discount,
-            total,
-            payment
+            discount: Number(discount),
+            total: Number(total),
+            payment: Number(payment)
         };
         const resp = await DoRequest(url, "POST", payload);
         if (resp.status === 201) {
@@ -48,87 +57,78 @@ function SendClient() {
         navigate("/");
     };
 
+    if (!state) return null; // avoid rendering until redirect
+
     return (
-        <section className="table p-4 rounded-xl mt-20">
-            <h1 className="flex justify-center mb-5 mt-2 font-bold">Enviar a clientes</h1>
-            <div className="flex gap-10 items-top flex-wrap">
-                <div className="flex w-full flex-col gap-2">
-                    <h1 className="">Datos del Producto</h1>
-                    {/* ID: hidden on screens <sm */}
-                    <div className="sm:block hidden">
-                        <div className="mb-2 block">
-                            <Label htmlFor="id">ID</Label>
-                        </div>
-                        <TextInput id="id" type="text" sizing="md" value={state.id} readOnly />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="product">Nombre</Label>
-                        </div>
-                        <TextInput id="product" type="text" sizing="md" value={state.product} readOnly />
-                    </div>
-                    {/* Categoría: hidden on screens <md */}
-                    <div className="md:block hidden">
-                        <div className="mb-2 block">
-                            <Label htmlFor="category">Categoría</Label>
-                        </div>
-                        <TextInput id="category" type="text" sizing="md" value={state.category} readOnly />
-                    </div>
-                    {/* Fabricante: hidden on screens <md */}
-                    {state.manufacturer && (
-                        <div className="md:block hidden">
-                            <div className="mb-2 block">
-                                <Label htmlFor="manufacturer">Fabricante</Label>
+        <section className="mt-20 px-4">
+            <div className="max-w-5xl mx-auto bg-[#050a2d] border border-[#1c2538] rounded-xl shadow-lg p-6 md:p-10 text-gray-100">
+                <header className="mb-8 text-center">
+                    <h1 className="text-2xl font-semibold tracking-tight text-white">Enviar a clientes</h1>
+                    <p className="text-sm mt-1 text-gray-400">Confirma los datos del producto y completa la información del cliente</p>
+                </header>
+
+                <form onSubmit={handleSubmit} className="space-y-10">
+                    <div className="grid gap-10 md:gap-12 md:grid-cols-2">
+                        {/* Columna Producto */}
+                        <div className="space-y-5">
+                            <h2 className="text-lg font-medium mb-2 text-white">Datos del Producto</h2>
+                            <div className="space-y-4">
+                                <Field id="id" label="ID" value={state.id} readOnly hiddenOn="sm" />
+                                <Field id="product" label="Nombre" value={state.product} readOnly />
+                                <Field id="category" label="Categoría" value={state.category} readOnly hiddenOn="md" />
+                                {state.manufacturer && (
+                                    <Field id="manufacturer" label="Fabricante" value={state.manufacturer} readOnly hiddenOn="md" />
+                                )}
+                                <Field id="total" label="Cantidad a enviar" type="number" min={1} value={total} onChange={(e) => setTotal(e.target.value)} />
+                                <Field id="unitPrice" label="Precio por producto ($)" type="number" value={state.price} readOnly />
                             </div>
-                            <TextInput id="manufacturer" type="text" sizing="md" value={state.manufacturer} readOnly />
                         </div>
-                    )}
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="total">Cantidad a enviar</Label>
+
+                        {/* Columna Cliente */}
+                        <div className="space-y-5">
+                            <h2 className="text-lg font-medium mb-2 text-white">Datos del Cliente</h2>
+                            <div className="space-y-4">
+                                <Field id="name" label="Nombre" refProp={name} />
+                                <Field id="address" label="Dirección" refProp={address} />
+                                <Field id="discount" label="Descuento (%)" type="number" min={0} max={100} step={0.5} value={discount} onChange={(e) => setDiscount(e.target.value)} />
+                                <Field id="payment" label="Total a debitar ($)" type="number" value={payment} readOnly />
+                            </div>
                         </div>
-                        <TextInput id="total" type="number" min={1} sizing="md" value={total} onChange={v => setTotal(v.target.value)} />
                     </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="precio">Precio por producto ($)</Label>
+
+                    <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4 border-t border-[#1c2538]">
+                        <div className="sm:mr-auto">
+                            <ButtonCmp path="/" name="Cancelar" />
                         </div>
-                        <TextInput id="precio" type="number" sizing="md" value={state.price} readOnly />
+                        <Button type="submit" size="sm" className="table_body-buttons px-6">Enviar</Button>
                     </div>
-                </div>
-                <div className="flex w-full flex-col gap-2">
-                    <h1 className="">Datos del cliente</h1>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="name">Nombre</Label>
-                        </div>
-                        <TextInput id="name" type="text" sizing="md" ref={name} />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="address">Dirección</Label>
-                        </div>
-                        <TextInput id="address" type="text" sizing="md" ref={address} />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="discount">Descuento (%)</Label>
-                        </div>
-                        <TextInput id="discount" type="number" min={0} max={100} step={0.5} sizing="md" value={discount} onChange={v => setDiscount(v.target.value)} />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="payment">Total a debitar ($)</Label>
-                        </div>
-                        <TextInput id="payment" type="text" sizing="md" value={payment} readOnly />
-                    </div>
-                </div>
-            </div>
-            <div className="flex justify-end mt-2 gap-2">
-                <ButtonCmp path="/" name="Cancelar" />
-                <Button size="sm" onClick={sendClient} className="table_body-buttons">Enviar</Button>
+                </form>
             </div>
         </section>
+    );
+}
+
+function Field({ id, label, type = "text", value, onChange, readOnly = false, refProp, hiddenOn, min, max, step }) {
+    // hiddenOn can be 'sm' or 'md' to hide on smaller screens
+    let visibility = "";
+    if (hiddenOn === "sm") visibility = " hidden sm:block";
+    if (hiddenOn === "md") visibility = " hidden md:block";
+    return (
+        <div className={visibility.trim()}>
+            <Label htmlFor={id} className="mb-1 block">{label}</Label>
+            <TextInput
+                id={id}
+                type={type}
+                sizing="md"
+                value={value}
+                readOnly={readOnly}
+                onChange={onChange}
+                ref={refProp}
+                min={min}
+                max={max}
+                step={step}
+            />
+        </div>
     );
 }
 
