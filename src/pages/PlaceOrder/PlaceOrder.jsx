@@ -1,129 +1,104 @@
 import { Button, Label, TextInput } from "flowbite-react";
 import { ButtonCmp } from "../../common/components/Button";
-import { showToast } from "../../common/plugins/toast/Toast"
+import { showToast } from "../../common/plugins/toast/Toast";
 import { useNavigate } from "react-router-dom";
 import DoRequest from "../../common/services/services";
 import { useRef } from "react";
 
 
-const domain = import.meta.env.VITE_API_URL
+const domain = import.meta.env.VITE_OPERATOR_URL
 
 function PlaceOrder() {
-    const navigate = useNavigate()
-    const product = useRef(null)
-    const color = useRef(null)
-    const category = useRef(null)
-    const price = useRef(null)
-    const total = useRef(null)
-    const name = useRef(null)
-    const email = useRef(null)
-    const tel = useRef(null)
-    const manufacturer = useRef(null)
+    const navigate = useNavigate();
+    const product = useRef(null);
+    const color = useRef(null);
+    const category = useRef(null);
+    const price = useRef(null);
+    const total = useRef(null);
+    const name = useRef(null);
+    const email = useRef(null);
+    const tel = useRef(null);
+    const manufacturer = useRef(null);
 
+    const makeOrder = async (e) => {
+        e.preventDefault();
+        const url = `${domain}/v1/orders`;
 
-    const makeOrder = async () => {
-        const url = `${domain}/ms-operator/v1/orders`
-        
         const payload = {
-            "product": product.current.value,
-            "color": color.current.value,
-            "category": category.current.value,
-            "price": parseFloat(price.current.value),
-            "total": parseInt(total.current.value),
-            "name": name.current.value,
-            "email": email.current.value,
-            "tel": tel.current.value,
-            "manufacturer": manufacturer.current.value 
-        }
+            product: product.current.value.trim(),
+            color: color.current.value.trim(),
+            category: category.current.value.trim(),
+            price: parseFloat(price.current.value),
+            total: parseInt(total.current.value),
+            name: name.current.value.trim(),
+            email: email.current.value.trim(),
+            tel: tel.current.value.trim(),
+            manufacturer: manufacturer.current.value.trim()
+        };
 
-        const resp = await DoRequest(url, "POST", payload)
-        if (resp.status == 201) {
-            showToast("Orden creada satisfactoriamente", "success")
-
+        const resp = await DoRequest(url, "POST", payload);
+        if (resp.status === 201) {
+            showToast("Orden creada satisfactoriamente", "success");
         } else {
-            showToast("Error creando orden", "error")
+            showToast("Error creando orden", "error");
         }
-        navigate("/")
-    }
+        navigate("/");
+    };
 
     return (
-        <section className="table px-auto p-4 mt-20 rounded-xl">
-            <h1 className="flex justify-center mb-5 mt-2">Crear Orden</h1>
-            <div className="flex min-w-md gap-10 items-top">
+            <section className="mt-20 px-4">
+                <div className="max-w-5xl mx-auto bg-[#050a2d] border border-[#1c2538] rounded-xl shadow-lg p-6 md:p-10 text-gray-100">
+                <header className="mb-8 text-center">
+                    <h1 className="text-2xl font-semibold tracking-tight text-white">Crear Orden</h1>
+                        <p className="text-sm mt-1 text-gray-400">Ingresa los datos del producto y del proveedor</p>
+                </header>
 
-                <div className="flex flex-col w-full gap-2">
-                    <h1 className="mb-1"> Datos del Producto</h1>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="product">Producto</Label>
+                <form onSubmit={makeOrder} className="space-y-10">
+                    <div className="grid gap-10 md:gap-12 md:grid-cols-2">
+                        {/* Columna Producto */}
+                        <div className="space-y-5">
+                            <h2 className="text-lg font-medium mb-2 text-white">Datos del Producto</h2>
+                            <div className="space-y-4">
+                                <Field id="product" label="Producto" refProp={product} />
+                                <Field id="color" label="Color" refProp={color} />
+                                <Field id="category" label="Categoría" refProp={category} />
+                                <Field id="price" label="Precio" type="number" refProp={price} />
+                                <Field id="total" label="Total" type="number" inputProps={{ step: 1, min: 0 }} refProp={total} />
+                                <Field id="manufacturer" label="Fabricante" refProp={manufacturer} />
+                            </div>
                         </div>
-                        <TextInput id="product" type="text" sizing="md" ref={product} />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="color">Color</Label>
-                        </div>
-                        <TextInput id="color" type="text" sizing="md" ref={color} />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="category">Categoría</Label>
-                        </div>
-                        <TextInput id="category" type="text" sizing="md" ref={category} />
-                    </div>
 
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="price">Precio</Label>
+                        {/* Columna Proveedor */}
+                        <div className="space-y-5">
+                            <h2 className="text-lg font-medium mb-2 text-white">Datos del Proveedor</h2>
+                            <div className="space-y-4">
+                                <Field id="name" label="Nombre" refProp={name} />
+                                <Field id="email" label="Email" type="email" refProp={email} />
+                                <Field id="tel" label="Teléfono" type="tel" refProp={tel} />
+                            </div>
                         </div>
-                        <TextInput id="price" type="number" sizing="md" ref={price} />
-                    </div>
-
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="total">Total</Label>
-                        </div>
-                        <TextInput id="total" type="number" step={1} min={0} sizing="md" ref={total} />
                     </div>
 
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="manufacturer">Fabricante</Label>
+                      <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4 border-t border-[#1c2538]">
+                        <div className="sm:mr-auto">
+                            <ButtonCmp path="/" name="Cancelar" />
                         </div>
-                        <TextInput id="manufacturer" type="text" sizing="md" ref={manufacturer} />
+                        <Button type="submit" size="sm" className="table_body-buttons px-6">Enviar</Button>
                     </div>
-
-                </div>
-
-                <div className="flex flex-col w-full gap-2">
-                    <h1 className="mb-1">Datos del proveedor</h1>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="name">Nombre</Label>
-                        </div>
-                        <TextInput id="name" type="text" sizing="md" ref={name} />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="email">Email</Label>
-                        </div>
-                        <TextInput id="email" type="email" sizing="md" ref={email} />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="tel">Teléfono</Label>
-                        </div>
-                        <TextInput id="tel" type="tel" sizing="md" ref={tel} />
-                    </div>
-
-                </div>
-            </div>
-            <div className="flex justify-end mt-10 gap-2">
-                <ButtonCmp path="/" name="Cancelar" />
-                <Button size="sm" onClick={makeOrder} className="table_body-buttons">Enviar</Button>
+                </form>
             </div>
         </section>
-    )
+    );
+}
+
+// Reusable field component
+function Field({ id, label, type = "text", refProp, inputProps = {} }) {
+    return (
+        <div>
+            <Label htmlFor={id} className="mb-1 block">{label}</Label>
+            <TextInput id={id} type={type} sizing="md" ref={refProp} {...inputProps} />
+        </div>
+    );
 }
 
 export default PlaceOrder
