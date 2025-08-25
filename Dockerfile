@@ -11,6 +11,9 @@ COPY . .
 # Copiar archivo de entorno de producción
 COPY .env.production .env.production
 
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+
 # Instalar dependencias
 RUN npm install
 

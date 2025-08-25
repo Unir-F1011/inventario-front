@@ -1,33 +1,44 @@
-import { Button, Select } from "flowbite-react"
-import { useEffect, useState } from "react"
-import DoRequest from "../../common/services/services.js"
+import { Button, Select } from "flowbite-react";
+import { useEffect, useState } from "react";
+import { getFacets, newAbort } from "../../common/services/services.js";
 
 export const Facets = ({ setCategory, setCreator }) => {
-  const [categories, setCategories] = useState([])
-  const [creators, setCreators] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState("")
-  const [selectedCreator, setSelectedCreator] = useState("")
+  const [categories, setCategories] = useState([]);
+  const [creators, setCreators] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCreator, setSelectedCreator] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Al montar el componente pedimos categorías y fabricantes
+  // Cargar facetas (categorías / fabricantes) desde el Gateway
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const catsRes = await DoRequest("/categorias")
-        const creatorsRes = await DoRequest("/fabricantes")
-        
-        setCategories(await catsRes.json())
-        setCreators(await creatorsRes.json())
-      } catch (err) {
-        console.error("Error cargando datos:", err)
-      }
-    }
-    fetchData()
-  }, [])
+    const ctrl = newAbort();
+    setLoading(true);
+    getFacets({}, { signal: ctrl.signal })
+      .then((res) => {
+        // Soporta distintos esquemas: {facets:{categories,manufacturers}} o plano
+        const catsSrc = res?.facets?.categories ?? res?.categories ?? [];
+        const mfgSrc = res?.facets?.manufacturers ?? res?.manufacturers ?? [];
+        const cats = catsSrc.map((x) =>
+          typeof x === "object" ? x : { key: x, displayName: x }
+        );
+        const mfgs = mfgSrc.map((x) =>
+          typeof x === "object" ? x : { key: x, displayName: x }
+        );
+        setCategories(cats);
+        setCreators(mfgs);
+      })
+      .catch(() => {
+        // Alerta Popup
+        window.alert("No se pudieron cargar facets");
+      })
+      .finally(() => setLoading(false));
+    return () => ctrl.abort();
+  }, []);
 
   const searchByFacets = () => {
-    setCategory(selectedCategory)
-    setCreator(selectedCreator)
-  }
+    setCategory(selectedCategory);
+    setCreator(selectedCreator);
+  };
 
   return (
     <div className="flex flex-wrap gap-2 items-center mb-2">
@@ -35,42 +46,42 @@ export const Facets = ({ setCategory, setCreator }) => {
       <Select
         sizing="md"
         onChange={(e) => setSelectedCategory(e.target.value)}
+        disabled={loading}
       >
-        <option value="">Todas las categorías</option>
-        <option value="Smartphone">Smartphone</option>
-        <option value="Laptop">Laptop</option>
-        <option value="Electrónicos">Electrónicos</option>
-        <option value="Electronics">Electronics</option>
-        <option value="telefono">telefono</option>
-
-        {//Al no tenter el servicio con el DISTINCT de Categoria
-        /*{categories.map((c, i) => (
-          <option key={i} value={c}>{c}</option>
-        ))}*/}
+        <option value="">
+          {loading ? "Cargando categorías..." : "Todas las categorías"}
+        </option>
+        {categories.map((c, i) => (
+          <option key={i} value={c.key}>
+            {c.displayName}
+          </option>
+        ))}
       </Select>
 
       {/* Fabricantes */}
       <Select
         sizing="md"
         onChange={(e) => setSelectedCreator(e.target.value)}
+        disabled={loading}
       >
-        <option value="">Todos los fabricantes</option>        
-        <option value="Apple">Apple</option>
-        <option value="ASUS">ASUS</option>
-        <option value="Dell">Dell</option>
-        <option value="Motorola">Motorola</option>
-        <option value="Samsung">Samsung</option>
-        <option value="Xiaomi">Xiaomi</option>
-
-        {//Al no tenter el servicio con el DISTINCT de Fabricantes
-        /*{creators.map((f, i) => (
-          <option key={i} value={f}>{f}</option>
-        ))}*/}
+        <option value="">
+          {loading ? "Cargando fabricantes..." : "Todos los fabricantes"}
+        </option>
+        {creators.map((f, i) => (
+          <option key={i} value={f.key}>
+            {f.displayName}
+          </option>
+        ))}
       </Select>
 
-      <Button size="md" onClick={searchByFacets} className="table_body-buttons">
-        Buscar
+      <Button
+        size="md"
+        onClick={searchByFacets}
+        className="table_body-buttons"
+        disabled={loading}
+      >
+        {loading ? "Cargando..." : "Buscar"}
       </Button>
     </div>
-  )
-}
+  );
+};
