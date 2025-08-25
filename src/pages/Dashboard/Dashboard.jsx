@@ -42,7 +42,7 @@ function Dashboard() {
     const onPageChange = (page) => setCurrentPage(page);
 
     useEffect(() => {
-        let url = `${domain}/ms-search/v1/items?page=${currentPage}`
+        let url = `${domain}/v1/items?page=${currentPage}`
 
         if (category != "") {
             url += `&category=${category}`

@@ -6,7 +6,7 @@ import DoRequest from "../../common/services/services";
 import { useRef } from "react";
 
 
-const domain = import.meta.env.VITE_API_URL
+const domain = import.meta.env.VITE_OPERATOR_URL
 
 function PlaceOrder() {
     const navigate = useNavigate()
@@ -22,7 +22,7 @@ function PlaceOrder() {
 
 
     const makeOrder = async () => {
-        const url = `${domain}/ms-operator/v1/orders`
+        const url = `${domain}/v1/orders`
         
         const payload = {
             "product": product.current.value,

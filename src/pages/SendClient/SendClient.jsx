@@ -6,7 +6,7 @@ import { showToast } from "../../common/plugins/toast/Toast";
 import DoRequest from "../../common/services/services";
 
 
-const domain = import.meta.env.VITE_API_URL
+const domain = import.meta.env.VITE_OPERATOR_URL
 
 function SendClient() {
     const { state } = useLocation()
@@ -29,7 +29,7 @@ function SendClient() {
 
 
     const sendClient = async () => {
-        const url = `${domain}/ms-operator/v1/shipments`
+        const url = `${domain}/v1/shipments`
         const payload = {
             "name": name.current.value,
             "address": address.current.value,
